@@ -216,7 +216,7 @@ button:focus,
  * Section Wrapper
  *-------------------*/
 .section-wrapper {
-    padding : 50px;
+    padding: 20px 50px 30px 50px;
     }
 
 @media (max-width : 480px) {
@@ -516,7 +516,7 @@ button:focus,
 /* Copyright */
 
 .footer {
-    padding : 30px 50px;
+    padding : 2px 50px;
     }
 
 .footer .copyright-section {
@@ -581,4 +581,18 @@ button:focus,
 .col-md-12 .col-md-6{
     margin-bottom: 1em;
 }
+
+.contact.social-icon{
+  margin-top: -10px;
+  margin-bottom: 10px;
+  padding: 0;
+  display: block;
+}
+.contact.social-icon li{
+  list-style-type: none;
+  margin: 0 5px;
+  padding: 0;
+  display: inline-block;
+}
 /*Time line code*/
+/*in timeline.css*/
