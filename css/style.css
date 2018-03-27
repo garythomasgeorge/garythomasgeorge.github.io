@@ -258,7 +258,7 @@ button:focus,
     height              : 100%;
     /*opacity: 0.50;*/
 
-    background-image    : url(../img/gary.jpg);
+    background-image    : url(../img/gary-min.jpg);
     background-size     : cover;
     background-position : center;
     overflow: hidden;
