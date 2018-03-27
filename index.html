@@ -294,8 +294,10 @@
                     <strong>Email</strong><br>
                     <a href="mailto:#">garythomasgeorge@gmail.com</a>
                 </address>
+                
               </div>
               <div class="col-md-6">
+                <div id="map"></div>
                 <div class="sub-title">
                   <h3> Photography </h3>
                 </div>
@@ -304,7 +306,7 @@
                   <li><a href="https://www.instagram.com/garythomasgeorge/" target="_blank"><span class="fa-stack fa"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-instagram fa-stack-1x fa-inverse" aria-hidden="true"></i></span></a></li>
                 </ul>
                 <div class="sub-title">
-                  <h3> Writing </h3>
+                  <h3> Blogs </h3>
                 </div>
                 <ul class="contact social-icon">
                     <li><a href="https://medium.com/@garythomasg" target="_blank"><span class="fa-stack fa"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-medium fa-stack-1x fa-inverse" aria-hidden="true"></i></span></a></li>
@@ -388,5 +390,21 @@ ga('send', 'pageview');
 <!-- Bootstrap -->
 <script src="js/bootstrap.min.js"></script>
 <script src="js/scripts.js"></script>
+<script>
+      function initMap() {
+        var uluru = {lat: -25.363, lng: 131.044};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+    </script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
+</script>
 </body>
 </html>
