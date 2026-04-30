@@ -89,7 +89,7 @@ export const projects: Project[] = [
       "iOS link manager app — save, organize, and revisit URLs with smart tagging.",
     tags: ["iOS", "Swift", "Personal Project"],
     hasCaseStudy: true,
-    links: [{ label: "App Store", href: "#TODO-univault-app" }],
+    links: [{ label: "App Store", href: "https://apps.apple.com/us/app/univault-link-manager/id6758565593" }],
   },
   {
     slug: "wordle",
