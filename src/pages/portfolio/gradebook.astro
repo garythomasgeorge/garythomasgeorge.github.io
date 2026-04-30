@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CaseStudy from "../../components/CaseStudy.astro";
+import { projects } from "../../data/projects.ts";
+
+const project = projects.find((p) => p.slug === "gradebook")!;
+---
+
+<BaseLayout
+  title={project.name}
+  description="Designed and launched the Fedena Gradebook module across 10+ countries — 20% retention lift, 15% sales growth."
+>
+  <CaseStudy
+    name={project.name}
+    type={project.type}
+    tags={project.tags}
+    links={project.links}
+    overview="Gradebook was the assessment and grading module added to Fedena SIS to support international curricula. It needed to handle wildly different grading systems — letter grades, percentages, GPAs, weighted rubrics — without forcing one country's model on another."
+    problem="Schools across geographies were stitching together spreadsheets and third-party tools to manage grades. Without a native module, Fedena was leaking customers in markets where assessment workflows were a make-or-break feature."
+    role="Product Manager — owned discovery, design, and launch across 10+ country variants."
+    approach={[
+      "Ran discovery with schools in multiple countries to map grading-system differences.",
+      "Designed a flexible grade-scheme abstraction that schools could configure without code changes.",
+      "Launched in waves by region; tracked retention and sales-growth signals against the rollout schedule.",
+    ]}
+    outcomes={[
+      "20% retention increase among institutions in markets where Gradebook launched.",
+      "15% sales growth attributed to the module's availability.",
+      "Live in 10+ countries.",
+    ]}
+  />
+</BaseLayout>

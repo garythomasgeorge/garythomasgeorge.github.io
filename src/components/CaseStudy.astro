@@ -1,0 +1,130 @@
+---
+import SkillBadge from "./SkillBadge.astro";
+import type { ExternalLink, ProjectType } from "../data/projects.ts";
+
+interface Props {
+  name: string;
+  type: ProjectType;
+  tags: string[];
+  links: ExternalLink[];
+  overview?: string;
+  problem?: string;
+  role?: string;
+  approach?: string[];
+  outcomes?: string[];
+}
+
+const {
+  name,
+  type,
+  tags,
+  links,
+  overview,
+  problem,
+  role,
+  approach = [],
+  outcomes = [],
+} = Astro.props;
+
+const currentPath = Astro.url.pathname.replace(/\/$/, "");
+const visibleLinks = links.filter(
+  (l) => l.href.replace(/\/$/, "") !== currentPath,
+);
+---
+
+<article class="container-page py-16 md:py-20 max-w-3xl">
+  <a href="/portfolio" class="label-mono inline-flex items-center gap-1.5 text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="19" y1="12" x2="5" y2="12"/>
+      <polyline points="12 19 5 12 12 5"/>
+    </svg>
+    All work
+  </a>
+
+  <header class="mt-6">
+    <span class="label-mono">{type}</span>
+    <h1 class="font-serif text-4xl md:text-5xl mt-3 leading-[1.1]">{name}</h1>
+
+    <div class="mt-5 flex flex-wrap gap-1.5">
+      {tags.map((t) => <SkillBadge label={t} />)}
+    </div>
+
+    <div class="mt-6 flex flex-wrap gap-3">
+      {visibleLinks.map((link) => (
+        <a
+          href={link.href}
+          target={link.href.startsWith("http") ? "_blank" : undefined}
+          rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+          class="btn-ghost text-sm"
+        >
+          {link.label}
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      ))}
+    </div>
+  </header>
+
+  <hr class="hr-fade my-10" />
+
+  {overview && (
+    <section class="mb-10">
+      <h2 class="label-mono mb-3">Overview</h2>
+      <p class="text-lg text-[var(--color-text-primary)] leading-relaxed">{overview}</p>
+    </section>
+  )}
+
+  {problem && (
+    <section class="mb-10">
+      <h2 class="label-mono mb-3">Problem</h2>
+      <p class="text-base text-[var(--color-text-primary)] leading-relaxed">{problem}</p>
+    </section>
+  )}
+
+  {role && (
+    <section class="mb-10">
+      <h2 class="label-mono mb-3">My Role</h2>
+      <p class="text-base text-[var(--color-text-primary)] leading-relaxed">{role}</p>
+    </section>
+  )}
+
+  {approach.length > 0 && (
+    <section class="mb-10">
+      <h2 class="label-mono mb-3">Approach &amp; Key Decisions</h2>
+      <ul class="space-y-3">
+        {approach.map((a) => (
+          <li class="flex gap-3 text-base leading-relaxed">
+            <span class="text-[var(--color-accent)] mt-1.5 shrink-0">▹</span>
+            <span>{a}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {outcomes.length > 0 && (
+    <section class="mb-10">
+      <h2 class="label-mono mb-3">Outcomes</h2>
+      <ul class="space-y-3">
+        {outcomes.map((o) => (
+          <li class="flex gap-3 text-base leading-relaxed">
+            <span class="text-[var(--color-accent-warm)] mt-1.5 shrink-0">★</span>
+            <span>{o}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <hr class="hr-fade my-10" />
+
+  <a href="/portfolio" class="link-accent inline-flex items-center gap-1.5">
+    More work
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="5" y1="12" x2="19" y2="12"/>
+      <polyline points="12 5 19 12 12 19"/>
+    </svg>
+  </a>
+</article>

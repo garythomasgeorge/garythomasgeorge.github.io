@@ -1,0 +1,31 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CaseStudy from "../../components/CaseStudy.astro";
+import { projects } from "../../data/projects.ts";
+
+const project = projects.find((p) => p.slug === "fedena-mobile")!;
+---
+
+<BaseLayout
+  title={project.name}
+  description="0→1 launch of the Fedena Connect mobile app for school admins, parents, students, and teachers across 40,000+ institutions."
+>
+  <CaseStudy
+    name={project.name}
+    type={project.type}
+    tags={project.tags}
+    links={project.links}
+    overview="Fedena Connect is the companion mobile app for Fedena SIS — bringing school admin, parent, student, and teacher workflows from desktop into the pockets of the 40,000+ institutions on the platform."
+    problem="Fedena's audience was increasingly mobile-first, but the SaaS surface was desktop-only. Schools needed a way to push notifications, track attendance, and message families without a laptop."
+    role="Product Manager — owned scope, roadmap, and launch from 0→1 across Android and iOS."
+    approach={[
+      "Identified the highest-frequency desktop workflows and prioritized them for the v1 mobile experience.",
+      "Coordinated with engineering on a shared API surface so mobile didn't fork the SIS data model.",
+      "Drove a phased rollout across pilot institutions before opening it to the broader customer base.",
+    ]}
+    outcomes={[
+      "30% adoption increase across institutions after launch.",
+      "Released on Android and iOS in parallel.",
+    ]}
+  />
+</BaseLayout>

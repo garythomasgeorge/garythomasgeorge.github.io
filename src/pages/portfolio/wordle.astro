@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CaseStudy from "../../components/CaseStudy.astro";
+import { projects } from "../../data/projects.ts";
+
+const project = projects.find((p) => p.slug === "wordle")!;
+---
+
+<BaseLayout
+  title={project.name}
+  description="A Flutter clone of Wordle with custom word lists, difficulty modes, and themes."
+>
+  <CaseStudy
+    name={project.name}
+    type={project.type}
+    tags={project.tags}
+    links={project.links}
+    overview="A Flutter port of Wordle, extended with configurable word lists, difficulty modes, and theme support. Built as a learning project to get hands-on with Flutter's animation and state-management primitives."
+    problem="Mainstream Wordle clones lock players into a fixed dictionary and pace. The goal was a version where you could drop in your own word list (e.g. domain-specific terms, foreign-language vocab) and tune the difficulty."
+    role="Solo builder — Flutter development, design, and packaging."
+    approach={[
+      "Modeled the game state as a pure state machine to keep the UI layer thin.",
+      "Pulled word-list configuration into a JSON layer so new dictionaries don't need a rebuild.",
+      "Added theme switching as a way to learn Flutter's theming system end-to-end.",
+    ]}
+    outcomes={[]}
+  />
+</BaseLayout>

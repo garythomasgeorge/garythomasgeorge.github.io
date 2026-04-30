@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CaseStudy from "../../components/CaseStudy.astro";
+import { projects } from "../../data/projects.ts";
+
+const project = projects.find((p) => p.slug === "adk-hitl")!;
+---
+
+<BaseLayout
+  title={project.name}
+  description="A pause-and-approve middleware for Google ADK agentic flows — open-source proof of concept for human-in-the-loop approvals."
+>
+  <CaseStudy
+    name={project.name}
+    type={project.type}
+    tags={project.tags}
+    links={project.links}
+    overview="An open-source proof of concept that adds a human-in-the-loop approval step to Google ADK agentic flows. Pauses agent execution at a configurable checkpoint, surfaces the proposed action for human review, and resumes once approved or rejected."
+    problem="Google ADK shipped without native HITL primitives. Agentic flows that need approval for high-stakes actions (payments, account changes, customer outreach) had no clean pattern — teams either bolted approvals on awkwardly or skipped the safety layer entirely."
+    role="Solo builder — architecture, code, documentation, writeup, and publishing."
+    approach={[
+      "Designed a middleware that wraps ADK agent runs and intercepts tool calls flagged for approval.",
+      "Persisted pause-state so approval workflows can run async (Slack, web UI, email) without blocking the agent worker.",
+      "Published the implementation on GitHub with a working example and a Medium walkthrough.",
+      "Connected the pattern to the broader CX Agent Studio enterprise abstraction in a follow-up post.",
+    ]}
+    outcomes={[
+      "Foundation for the CX Agent Studio enterprise abstraction discussed in Part 2 of the blog series.",
+      "Cited and referenced in Part 1 of the two-part Medium series on agentic systems.",
+    ]}
+  />
+</BaseLayout>

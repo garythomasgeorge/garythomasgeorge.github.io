@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CaseStudy from "../../components/CaseStudy.astro";
+import { projects } from "../../data/projects.ts";
+
+const project = projects.find((p) => p.slug === "univault")!;
+---
+
+<BaseLayout
+  title={project.name}
+  description="UniVault — an iOS link manager for saving, organizing, and revisiting URLs."
+>
+  <CaseStudy
+    name={project.name}
+    type={project.type}
+    tags={project.tags}
+    links={project.links}
+    overview="UniVault is a personal iOS app for capturing URLs the way notes apps capture text — fast in, easy to find later. Built as a side project to scratch a personal organizing itch."
+    problem="Read-it-later apps optimize for articles. Bookmark managers feel like browser tabs in disguise. Neither handled the messy reality of saving a tweet, a doc, a YouTube link, and a half-read PDF in the same place."
+    role="Solo builder — design, iOS development, and App Store release."
+    approach={[
+      "Designed around a single capture-and-tag flow as the primary interaction.",
+      "Shipped a v1 focused on speed of save and ease of retrieval rather than feature breadth.",
+      "Released through the App Store after closed beta with friends.",
+    ]}
+    outcomes={[]}
+  />
+</BaseLayout>

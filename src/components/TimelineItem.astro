@@ -1,0 +1,64 @@
+---
+import SkillBadge from "./SkillBadge.astro";
+
+interface Props {
+  company: string;
+  role: string;
+  client?: string;
+  product?: string;
+  location: string;
+  dateRange: string;
+  bullets?: string[];
+  stack?: string[];
+  compact?: boolean;
+}
+
+const {
+  company,
+  role,
+  client,
+  product,
+  location,
+  dateRange,
+  bullets = [],
+  stack = [],
+  compact = false,
+} = Astro.props;
+---
+
+<article class="relative pl-6 border-l border-[var(--color-border)]">
+  <span class="absolute left-0 top-2 w-2 h-2 -translate-x-1/2 rounded-full bg-[var(--color-accent)]"></span>
+
+  <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+    <h3 class="font-serif text-xl">{company}</h3>
+    <span class="text-sm text-[var(--color-text-muted)]">— {role}</span>
+  </div>
+
+  <p class="label-mono mt-1">
+    {dateRange} · {location}
+  </p>
+
+  {(client || product) && (
+    <p class="mt-2 text-sm text-[var(--color-text-muted)]">
+      {client && <><span class="text-[var(--color-text-primary)]">Client:</span> {client}</>}
+      {product && <><span class="text-[var(--color-text-primary)]">Product:</span> {product}</>}
+    </p>
+  )}
+
+  {!compact && bullets.length > 0 && (
+    <ul class="mt-4 space-y-2 text-sm text-[var(--color-text-primary)] leading-relaxed">
+      {bullets.map((b) => (
+        <li class="flex gap-3">
+          <span class="text-[var(--color-accent)] mt-1.5 shrink-0">▹</span>
+          <span>{b}</span>
+        </li>
+      ))}
+    </ul>
+  )}
+
+  {!compact && stack.length > 0 && (
+    <div class="mt-4 flex flex-wrap gap-1.5">
+      {stack.map((s) => <SkillBadge label={s} />)}
+    </div>
+  )}
+</article>

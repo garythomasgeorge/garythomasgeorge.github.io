@@ -1,0 +1,170 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import SkillBadge from "../components/SkillBadge.astro";
+import TimelineItem from "../components/TimelineItem.astro";
+import { featuredProjects } from "../data/projects.ts";
+import { experience, skillsBuild, skillsHow } from "../data/experience.ts";
+
+const miniTimeline = experience.slice(0, 2);
+
+const writing = [
+  {
+    title: "ADK Human-in-the-Loop Middleware",
+    blurb: "Part 1: a middleware pattern for adding human approvals to Google ADK agentic flows.",
+    href: "#TODO-adk-hitl-medium",
+  },
+  {
+    title: "CX Agent Studio — A First Look",
+    blurb: "Part 2: an independent product breakdown of Google's enterprise agent platform.",
+    href: "#TODO-cx-agent-medium",
+  },
+];
+---
+
+<BaseLayout
+  title="Gary Thomas George"
+  description="Product Manager building conversational AI and agentic systems at enterprise scale. Currently leading Comcast Xfinity Assistant on Google ADK."
+>
+  <!-- Hero -->
+  <section class="hero-mesh">
+    <div class="container-page py-20 md:py-32">
+      <p class="label-mono mb-6">Product Manager · Conversational AI</p>
+      <h1 class="font-serif text-5xl md:text-7xl leading-[1.05] max-w-4xl">
+        Building AI products that work at scale.
+      </h1>
+      <p class="mt-6 text-lg md:text-xl text-[var(--color-text-muted)] max-w-2xl">
+        Product Manager · Conversational AI · Agentic Systems · New York
+      </p>
+      <div class="mt-10 flex flex-wrap gap-3">
+        <a href="/portfolio" class="btn-primary">
+          View Work
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+        <a href="/resume" class="btn-ghost">Resume</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Currently strip -->
+  <section class="border-y border-[var(--color-border)] bg-[var(--color-surface)]">
+    <div class="container-page py-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+      <span class="label-mono text-[var(--color-accent)]">Currently</span>
+      <span class="text-[var(--color-text-muted)]">
+        Product Owner @ <span class="text-[var(--color-text-primary)]">Capgemini</span> · Client: <span class="text-[var(--color-text-primary)]">Comcast Xfinity</span> · Building on Google ADK, Conversational Agents &amp; CX Agent Studio
+      </span>
+    </div>
+  </section>
+
+  <!-- Featured projects -->
+  <section class="container-page py-20 md:py-28">
+    <header class="flex items-end justify-between gap-4 mb-10">
+      <div>
+        <p class="label-mono">Selected Work</p>
+        <h2 class="font-serif text-3xl md:text-4xl mt-2">Featured projects</h2>
+      </div>
+      <a href="/portfolio" class="link-accent text-sm hidden sm:inline-flex items-center gap-1.5">
+        All work
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
+    </header>
+
+    <div class="grid gap-5 md:grid-cols-3">
+      {featuredProjects.map((p) => <ProjectCard project={p} />)}
+    </div>
+  </section>
+
+  <hr class="hr-fade" />
+
+  <!-- Skills -->
+  <section class="container-page py-20 md:py-28">
+    <p class="label-mono">Stack &amp; Approach</p>
+    <h2 class="font-serif text-3xl md:text-4xl mt-2 mb-10">How I work</h2>
+
+    <div class="grid gap-10 md:grid-cols-2">
+      <div>
+        <h3 class="text-lg mb-5 text-[var(--color-text-primary)]">What I build with</h3>
+        <div class="flex flex-wrap gap-2">
+          {skillsBuild.map((s) => <SkillBadge label={s} />)}
+        </div>
+      </div>
+      <div>
+        <h3 class="text-lg mb-5 text-[var(--color-text-primary)]">How I work</h3>
+        <ul class="space-y-2 text-[var(--color-text-primary)]">
+          {skillsHow.map((s) => (
+            <li class="flex gap-3 text-sm">
+              <span class="text-[var(--color-accent)] mt-1.5 shrink-0">▹</span>
+              <span>{s}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="hr-fade" />
+
+  <!-- Mini timeline -->
+  <section class="container-page py-20 md:py-28">
+    <p class="label-mono">Path</p>
+    <h2 class="font-serif text-3xl md:text-4xl mt-2 mb-10">Recent experience</h2>
+
+    <div class="space-y-10 max-w-2xl">
+      {miniTimeline.map((e) => (
+        <TimelineItem
+          company={e.company}
+          role={e.role}
+          client={e.client}
+          product={e.product}
+          location={e.location}
+          dateRange={`${e.start}–${e.end}`}
+          compact={true}
+        />
+      ))}
+    </div>
+
+    <a href="/resume" class="link-accent inline-flex items-center gap-1.5 mt-10 text-sm">
+      View full resume
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </a>
+  </section>
+
+  <hr class="hr-fade" />
+
+  <!-- Writing -->
+  <section class="container-page py-20 md:py-28">
+    <p class="label-mono">Writing</p>
+    <h2 class="font-serif text-3xl md:text-4xl mt-2 mb-10">From the blog</h2>
+
+    <div class="grid gap-5 md:grid-cols-2">
+      {writing.map((w) => (
+        <a
+          href={w.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="card p-6 block group"
+        >
+          <p class="label-mono mb-3 text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] transition-colors">Medium</p>
+          <h3 class="font-serif text-xl leading-snug mb-3">{w.title}</h3>
+          <p class="text-sm text-[var(--color-text-muted)] leading-relaxed">{w.blurb}</p>
+          <span class="link-accent inline-flex items-center gap-1.5 mt-4 text-sm">
+            Read post
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

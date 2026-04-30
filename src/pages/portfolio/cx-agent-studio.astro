@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CaseStudy from "../../components/CaseStudy.astro";
+import { projects } from "../../data/projects.ts";
+
+const project = projects.find((p) => p.slug === "cx-agent-studio")!;
+---
+
+<BaseLayout
+  title={project.name}
+  description="Independent product breakdown of Google CX Agent Studio for practitioners — connecting enterprise patterns to ADK HITL concepts."
+>
+  <CaseStudy
+    name={project.name}
+    type={project.type}
+    tags={project.tags}
+    links={project.links}
+    overview="A first-look product breakdown of Google's CX Agent Studio aimed at practitioners — what it offers, where it fits in the enterprise agent stack, and how it relates to the open-source ADK HITL middleware from Part 1."
+    problem="No clear, independent breakdown of CX Agent Studio existed for practitioners trying to evaluate whether to adopt it. Most coverage was vendor-side. Builders needed a hands-on assessment grounded in real agentic-system trade-offs."
+    role="Solo researcher and writer."
+    approach={[
+      "Mapped CX Agent Studio's primitives (agents, playbooks, tooling, governance) onto common enterprise agent patterns.",
+      "Connected the platform's HITL story to the open-source middleware pattern from Part 1.",
+      "Published as Part 2 of a two-part Medium series on building production-ready agentic systems.",
+    ]}
+    outcomes={[]}
+  />
+</BaseLayout>

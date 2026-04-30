@@ -1,0 +1,28 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CaseStudy from "../../components/CaseStudy.astro";
+import { projects } from "../../data/projects.ts";
+
+const project = projects.find((p) => p.slug === "fitbit-watchface")!;
+---
+
+<BaseLayout
+  title={project.name}
+  description="A minimalist Fitbit watchface — daily goals, weather, and battery at a glance."
+>
+  <CaseStudy
+    name={project.name}
+    type={project.type}
+    tags={project.tags}
+    links={project.links}
+    overview="A custom watchface built on the Fitbit SDK, designed to surface only what's actually useful at a glance: time, daily activity rings, weather, and battery."
+    problem="Most Fitbit watchfaces optimize for visual flair over readability. The goal was a face that respects the small screen and answers the questions you actually look at your wrist for."
+    role="Solo builder — design, JavaScript implementation against the Fitbit SDK, packaging."
+    approach={[
+      "Reduced the layout to four primary glanceable elements.",
+      "Worked within Fitbit SDK constraints on memory and rendering.",
+      "Iterated on contrast and font sizing for visibility in sunlight.",
+    ]}
+    outcomes={[]}
+  />
+</BaseLayout>
