@@ -118,23 +118,39 @@ export const certifications: Certification[] = [
 ];
 
 export const skillsBuild = [
+  // AI & Conversational
   "Google ADK",
   "Vertex AI",
   "Conversational Agents",
   "CX Agent Studio",
   "Dialogflow",
   "Gemini APIs",
+  // Mobile & Web
   "Flutter",
+  "Swift / iOS",
   "Firebase",
+  "React",
   "Astro",
+  "Tailwind CSS",
+  // Design & Analytics
+  "Figma",
+  "Looker",
+  "Mixpanel",
+  "SQL",
+  // Dev & Workflow
+  "Python",
   "GitHub",
+  "Jira",
+  "Notion",
 ];
 
 export const skillsHow = [
-  "0 → 1 product development",
-  "Roadmap & backlog",
-  "Cross-functional leadership",
-  "Agile / Scrum (CSPO)",
-  "User research",
-  "Agentic system design",
+  "0 → 1 product development — from problem discovery to shipped product",
+  "Roadmap & backlog prioritization across competing stakeholder needs",
+  "Cross-functional leadership with eng, design, data, and business teams",
+  "Agile / Scrum delivery (CSPO certified) — sprints, retros, and release planning",
+  "User research & discovery — interviews, journey mapping, and usability testing",
+  "Agentic & conversational AI system design — flows, fallbacks, and HITL patterns",
+  "Data-informed decisions using analytics, funnels, and experiment readouts",
+  "Technical fluency across web, mobile, APIs, and cloud — enough to build prototypes",
 ];
