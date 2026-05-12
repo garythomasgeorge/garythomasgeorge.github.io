@@ -19,12 +19,12 @@ export const experience: Experience[] = [
     start: "Jun 2024",
     end: "Present",
     bullets: [
-      "Managing roadmap and delivery of Xfinity Assistant chatbot.",
-      "Migrating legacy IVR/chatbot systems to Google Dialogflow / ADK ecosystem.",
+      "Contributing to roadmap and delivery of Xfinity Assistant — a large-scale omnichannel virtual assistant.",
+      "Supporting migration of IVR and chatbot modules to the Google ADK / Conversational Agents ecosystem.",
       "Launched field tech chatbot in 4 months; used by 100+ techs, 10,000+ chats/day.",
-      "Built prototype for Conversational Agents Playbook → released to production → $9M+ savings.",
-      "Led Sales and Internet Essentials modules for omnichannel IVR migration.",
-      "Built internal AXIS conversational insights tool using Gemini LLMs (sentiment, summary, agent metrics).",
+      "Built a Conversational Agents Playbook prototype → shipped to production → contributing to millions in savings by reducing human agent escalations.",
+      "Owned the Sales and Internet Essentials modules within the broader omnichannel IVR migration.",
+      "Vibe-coded AXIS — an internal chat transcript analyzer built end-to-end with Gemini LLMs, surfacing sentiment, summary, and agent metrics.",
     ],
     stack: [
       "Google ADK",
