@@ -2,6 +2,8 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CaseStudy from "../../components/CaseStudy.astro";
 import { projects } from "../../data/projects.ts";
+import MockupFigure from "../../components/mockups/MockupFigure.astro";
+import ScreenshotStrip from "../../components/mockups/ScreenshotStrip.astro";
 
 const project = projects.find((p) => p.slug === "univault")!;
 ---
@@ -24,5 +26,23 @@ const project = projects.find((p) => p.slug === "univault")!;
       "Released through the App Store after closed beta with friends.",
     ]}
     outcomes={[]}
-  />
+  >
+    <Fragment slot="showcase">
+      <MockupFigure
+        title="Capture first, organize later"
+        caption="Save from any app through the share sheet, add notes in the app, then sort everything into collections and tags."
+        note="App Store screenshots"
+      >
+        <ScreenshotStrip
+          shots={[
+            { src: "/screens/univault/1.jpg", alt: "UniVault home screen showing saved links in Your Vault", label: "Your vault" },
+            { src: "/screens/univault/2.jpg", alt: "Adding a note or link inside the app", label: "Add notes & links" },
+            { src: "/screens/univault/3.jpg", alt: "Share sheet saving a link from another app to UniVault", label: "Share to save" },
+            { src: "/screens/univault/4.jpg", alt: "Organizing links into collections and tags", label: "Collections & tags" },
+            { src: "/screens/univault/5.jpg", alt: "UniVault sign-in screen with magic link option", label: "Quick sign up" },
+          ]}
+        />
+      </MockupFigure>
+    </Fragment>
+  </CaseStudy>
 </BaseLayout>

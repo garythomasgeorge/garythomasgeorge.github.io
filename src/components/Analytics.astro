@@ -1,0 +1,20 @@
+---
+// Google Analytics 4. Paste the Measurement ID (starts with "G-") from
+// GA → Admin → Data streams → your web stream. The tag only loads in
+// production builds, so local dev visits aren't counted.
+const GA_MEASUREMENT_ID = "G-LCM8MHF2N5";
+
+const enabled = import.meta.env.PROD && GA_MEASUREMENT_ID.startsWith("G-");
+---
+
+{enabled && (
+  <>
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+    <script is:inline define:vars={{ id: GA_MEASUREMENT_ID }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", id);
+    </script>
+  </>
+)}

@@ -193,3 +193,30 @@
 @media (prefers-reduced-motion: reduce) {
   .hero-mesh::before { animation: none; }
 }
+
+
+/* Print: used to generate the downloadable resume PDF from /resume */
+@media print {
+  :root,
+  [data-theme] {
+    --color-bg: #ffffff;
+    --color-surface: #ffffff;
+    --color-border: #dddddd;
+    --color-accent: #047857;
+    --color-accent-warm: #b45309;
+    --color-text-primary: #14141c;
+    --color-text-muted: #55556a;
+  }
+  @page { margin: 12mm 12mm; }
+  html { font-size: 12.5px; }
+  body { background: #ffffff; }
+  body > header,
+  body > footer,
+  #theme-toggle,
+  a[download] { display: none !important; }
+  .container-page { max-width: none; padding-inline: 0; }
+  .card { backdrop-filter: none; box-shadow: none; }
+  .card, li { break-inside: avoid; }
+  h2 { break-after: avoid; }
+  .hr-fade { margin-block: 1rem !important; }
+}

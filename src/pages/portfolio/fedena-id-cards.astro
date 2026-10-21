@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CaseStudy from "../../components/CaseStudy.astro";
+import { projects } from "../../data/projects.ts";
+import MockupFigure from "../../components/mockups/MockupFigure.astro";
+import IdCardsMockup from "../../components/mockups/IdCardsMockup.astro";
+
+const project = projects.find((p) => p.slug === "fedena-id-cards")!;
+---
+
+<BaseLayout
+  title={project.name}
+  description="A Fedena web app that lets schools design and print their own ID cards and certificates from student and staff records."
+>
+  <CaseStudy
+    name={project.name}
+    type={project.type}
+    tags={project.tags}
+    links={project.links}
+    overview="Fedena ID Cards is a web app plus portable printing setup that lets schools produce student and staff ID cards, and the certificates they issue, directly from the records already in Fedena."
+    problem="Schools relied on outside vendors to print student and employee ID cards, and those vendors weren't always reliable. Student data moved to them through Excel sheets, where it was easily lost or entered wrong. Cards get lost and need replacing all the time, so schools kept needing small print runs. Certificates had the same problem: each needed its own design and had to be printed in small batches and also made available digitally."
+    role="User researcher and product manager."
+    approach={[
+      "Used the student and staff records already in Fedena as the source for every card, so no data had to be exported to spreadsheets or re-entered by a vendor.",
+      "Let schools design their own ID card and certificate templates instead of accepting one fixed layout.",
+      "Supported printing in-house in any quantity, so replacing one lost card didn't mean placing a vendor order.",
+      "Made certificates available both as printed copies and digitally.",
+    ]}
+    outcomes={[]}
+  >
+    <Fragment slot="showcase">
+      <MockupFigure
+        title="From records to printed card"
+        caption="Choose which Fedena fields appear on the card, preview it live, then print exactly what's needed, from one replacement card to a batch of certificates with digital copies."
+        note="Recreated · sample data"
+      >
+        <IdCardsMockup />
+      </MockupFigure>
+    </Fragment>
+  </CaseStudy>
+</BaseLayout>

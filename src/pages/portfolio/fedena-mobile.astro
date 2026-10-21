@@ -2,30 +2,66 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CaseStudy from "../../components/CaseStudy.astro";
 import { projects } from "../../data/projects.ts";
+import MockupFigure from "../../components/mockups/MockupFigure.astro";
+import ScreenshotStrip from "../../components/mockups/ScreenshotStrip.astro";
 
 const project = projects.find((p) => p.slug === "fedena-mobile")!;
 ---
 
 <BaseLayout
   title={project.name}
-  description="0→1 launch of the Fedena Connect mobile app for school admins, parents, students, and teachers across 40,000+ institutions."
+  description="0→1 launch of the Fedena Mobile App for school admins, parents, students, and teachers across 40,000+ institutions."
 >
   <CaseStudy
     name={project.name}
     type={project.type}
     tags={project.tags}
     links={project.links}
-    overview="Fedena Connect is the companion mobile app for Fedena SIS — bringing school admin, parent, student, and teacher workflows from desktop into the pockets of the 40,000+ institutions on the platform."
-    problem="Fedena's audience was increasingly mobile-first, but the SaaS surface was desktop-only. Schools needed a way to push notifications, track attendance, and message families without a laptop."
-    role="Product Manager — owned scope, roadmap, and launch from 0→1 across Android and iOS."
+    overview="The Fedena Mobile App is the companion app for Fedena SIS — bringing school admin, parent, student, and teacher workflows from desktop into the pockets of the 40,000+ institutions on the platform."
+    problem="Fedena's web app assumed users were at a computer, and most of the people who needed it weren't. Teachers had no computer in the classroom to take attendance. Parents couldn't easily see how their children were doing academically. School administrators wanted a quick way to keep parents updated on school events. Later, for v2, school managers wanted an overview of everything happening across the school, and academic admins wanted the app to be the school's hub during and after Covid-19."
+    role="End-to-end product manager and user researcher. I owned scope, roadmap and launch from the MVP through v2 on Android and iOS."
     approach={[
-      "Identified the highest-frequency desktop workflows and prioritized them for the v1 mobile experience.",
-      "Coordinated with engineering on a shared API surface so mobile didn't fork the SIS data model.",
-      "Drove a phased rollout across pilot institutions before opening it to the broader customer base.",
+      "Built the MVP and v1 around the daily jobs that had no good answer away from a desk: attendance for teachers, academic progress for parents and event updates from administrators.",
+      "Coordinated with engineering on a shared API so the mobile app didn't fork the SIS data model.",
+      "Rolled out in phases across pilot institutions before opening it to the wider customer base.",
+      "For v2, extended the app from parents and students to staff and school managers, adding a staff dashboard and fee, income and admission reports so it could serve as the school's hub during and after Covid-19.",
     ]}
     outcomes={[
       "30% adoption increase across institutions after launch.",
       "Released on Android and iOS in parallel.",
     ]}
-  />
+  >
+    <Fragment slot="showcase">
+      <MockupFigure
+        title="The app in schools' hands"
+        caption="Onboarding, finding your school, a student dashboard built around the most-used desktop workflows, and fee tracking: the main jobs moved from the desktop system to the phone."
+        note="App Store screenshots"
+      >
+        <ScreenshotStrip
+          shots={[
+            { src: "/screens/fedena/1.jpg", alt: "Fedena mobile onboarding screen: Stay on top of all that is happening at your institution", label: "Onboarding" },
+            { src: "/screens/fedena/3.jpg", alt: "School search screen asking for the school name or URL", label: "Find your school" },
+            { src: "/screens/fedena/4.jpg", alt: "Student dashboard listing timetable, events, attendance, fees, announcements and subjects", label: "Student dashboard" },
+            { src: "/screens/fedena/5.jpg", alt: "Fees screen showing total fees due and an upcoming hostel fee", label: "Fees due" },
+          ]}
+        />
+      </MockupFigure>
+      <MockupFigure
+        title="Version 2: an app for running the school"
+        caption="v2 extended the app beyond parents and students. Staff got a daily dashboard with classes, events and leave approvals, and school managers got fee, income and admission reports on their phones. It was designed to be the school's hub during and after Covid-19."
+        note="Original product screenshots"
+      >
+        <div class="flex flex-wrap justify-center gap-6">
+          <figure class="w-[240px] flex flex-col gap-2">
+            <img src="/screens/fedena/v2-dashboard.jpg" alt="Fedena v2 staff dashboard with today's timetable, current and upcoming classes, events and pending leave requests" loading="lazy" decoding="async" class="w-full h-auto rounded-xl border border-[var(--color-border)] shadow-lg" />
+            <figcaption class="label-mono text-[0.6rem] text-center">Staff dashboard</figcaption>
+          </figure>
+          <figure class="w-[240px] flex flex-col gap-2">
+            <img src="/screens/fedena/v2-reports.jpg" alt="Fedena v2 analytics and reports screen showing collected fees for the financial year" loading="lazy" decoding="async" class="w-full h-auto rounded-xl border border-[var(--color-border)] shadow-lg" />
+            <figcaption class="label-mono text-[0.6rem] text-center">Analytics &amp; reports</figcaption>
+          </figure>
+        </div>
+      </MockupFigure>
+    </Fragment>
+  </CaseStudy>
 </BaseLayout>

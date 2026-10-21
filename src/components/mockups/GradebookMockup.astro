@@ -1,0 +1,144 @@
+---
+// Illustrative recreation of the Gradebook setup screen: an exam structure
+// built from configurable terms and assessments, plus grading scales for
+// scholastic and co-scholastic subjects. No original screenshots survive.
+
+const terms = [
+  {
+    name: "Term 1",
+    weight: 50,
+    items: [
+      { name: "Periodic Test 1", weight: 10 },
+      { name: "Notebook Submission", weight: 5 },
+      { name: "Subject Enrichment", weight: 5 },
+      { name: "Half-Yearly Exam", weight: 80 },
+    ],
+  },
+  {
+    name: "Term 2",
+    weight: 50,
+    items: [
+      { name: "Periodic Test 2", weight: 10 },
+      { name: "Notebook Submission", weight: 5 },
+      { name: "Subject Enrichment", weight: 5 },
+      { name: "Annual Exam", weight: 80 },
+    ],
+  },
+];
+
+const scale = [
+  ["A1", "91–100"], ["A2", "81–90"], ["B1", "71–80"], ["B2", "61–70"],
+  ["C1", "51–60"], ["C2", "41–50"], ["D", "33–40"], ["E", "Below 33"],
+];
+
+const coScholastic = [
+  { area: "Work Education", grade: "A" },
+  { area: "Art Education", grade: "A" },
+  { area: "Health & Physical Ed.", grade: "B" },
+  { area: "Discipline", grade: "A" },
+];
+---
+
+<div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[0.8rem] overflow-hidden shadow-xl">
+  <div class="flex flex-wrap items-center gap-3 px-4 py-3 border-b border-[var(--color-border)]">
+    <span class="font-medium mr-auto">Gradebook · Exam structure</span>
+    <span class="gb-chip">Academic year 2019–20 ▾</span>
+    <span class="gb-chip">Grade 6–8 ▾</span>
+    <span class="gb-chip gb-chip-accent">+ Add assessment</span>
+  </div>
+
+  <div class="p-4 grid gap-3 lg:grid-cols-[1.3fr_1fr]">
+    <!-- Exam structure -->
+    <div class="gb-panel">
+      <p class="font-medium mb-3">Scholastic assessment plan</p>
+      <div class="space-y-3">
+        {terms.map((t) => (
+          <div>
+            <div class="flex justify-between mb-1.5">
+              <span class="font-medium">{t.name}</span>
+              <span class="text-[var(--color-text-muted)] text-[0.7rem]">{t.weight}% of final</span>
+            </div>
+            <ul class="space-y-1">
+              {t.items.map((i) => (
+                <li class="flex items-center gap-2 pl-3 border-l border-[var(--color-border)]">
+                  <span class="flex-1">{i.name}</span>
+                  <div class="w-24 h-1.5 rounded-full bg-[var(--color-border)] hidden sm:block">
+                    <div class="h-1.5 rounded-full bg-[var(--color-accent)]" style={`width:${i.weight}%`}></div>
+                  </div>
+                  <span class="w-9 text-right tabular-nums text-[var(--color-text-muted)]">{i.weight}%</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <p class="mt-3 text-[0.7rem] text-[var(--color-text-muted)]">Rules: periodic tests use the best of two attempts · marks rounded to the nearest whole number</p>
+    </div>
+
+    <div class="grid gap-3">
+      <!-- Grading scale -->
+      <div class="gb-panel">
+        <p class="font-medium mb-2">Grading scale · 8-point</p>
+        <div class="grid grid-cols-4 gap-1.5">
+          {scale.map(([g, r]) => (
+            <div class="gb-grade">
+              <b>{g}</b>
+              <span>{r}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Co-scholastic -->
+      <div class="gb-panel">
+        <p class="font-medium mb-2">Co-scholastic · 3-point (A–C)</p>
+        <ul class="space-y-1.5">
+          {coScholastic.map((c) => (
+            <li class="flex justify-between">
+              <span>{c.area}</span>
+              <span class="gb-pill">{c.grade}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .gb-panel {
+    border: 1px solid var(--color-border);
+    border-radius: 0.6rem;
+    padding: 0.75rem;
+    background: var(--color-bg);
+  }
+  .gb-chip {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.6rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.4rem;
+    color: var(--color-text-muted);
+  }
+  .gb-chip-accent {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+  .gb-grade {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.35rem 0.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.4rem;
+  }
+  .gb-grade b { font-size: 0.85rem; color: var(--color-accent); }
+  .gb-grade span { font-size: 0.6rem; color: var(--color-text-muted); }
+  .gb-pill {
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.05rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-accent);
+    color: var(--color-accent);
+  }
+</style>

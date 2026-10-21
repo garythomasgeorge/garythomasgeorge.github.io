@@ -1,0 +1,30 @@
+---
+// Frame for a product visual. Hand-built mockups keep the default note, since
+// client UI can't be shown; real screenshots pass their own source note.
+interface Props {
+  title: string;
+  caption: string;
+  note?: string;
+}
+const { title, caption, note = "Illustrative · sample data" } = Astro.props;
+---
+
+<figure class="mockup-figure rounded-2xl border border-[var(--color-border)] overflow-hidden">
+  <div class="mockup-stage p-4 md:p-8">
+    <slot />
+  </div>
+  <figcaption class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4 px-4 md:px-6 py-4 border-t border-[var(--color-border)] bg-[var(--color-surface)]">
+    <span class="font-serif text-lg shrink-0">{title}</span>
+    <span class="text-sm text-[var(--color-text-muted)] leading-relaxed flex-1">{caption}</span>
+    <span class="label-mono shrink-0 text-[0.65rem]">{note}</span>
+  </figcaption>
+</figure>
+
+<style>
+  /* Dotted "canvas" so mockups read as designed artifacts, not live screenshots */
+  .mockup-stage {
+    background-color: color-mix(in oklab, var(--color-bg) 92%, var(--color-accent));
+    background-image: radial-gradient(color-mix(in oklab, var(--color-text-muted) 28%, transparent) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+</style>

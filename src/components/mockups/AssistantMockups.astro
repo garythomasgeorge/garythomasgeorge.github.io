@@ -1,0 +1,133 @@
+---
+// Three representative chat screens for the enterprise virtual assistant case
+// study: a generative troubleshooting answer, a human handoff that carries
+// context, and the field-tech assistant. All content is invented sample data.
+import PhoneFrame from "./PhoneFrame.astro";
+---
+
+<div class="grid gap-8 md:grid-cols-3 items-start">
+  <!-- 1. Generative troubleshooting -->
+  <PhoneFrame label="01 · Generative answer" title="Virtual Assistant" subtitle="Online">
+    <div class="bubble-user">My internet keeps dropping in the evenings. Third night in a row.</div>
+    <div class="bubble-bot">
+      Sorry about that. I checked your connection, and here's what I found:
+    </div>
+    <div class="tool-card">
+      <p class="label-mono text-[0.6rem] mb-2">Connection check · last 7 days</p>
+      <ul class="space-y-1.5">
+        <li class="flex justify-between"><span>Gateway status</span><span class="ok">Online</span></li>
+        <li class="flex justify-between"><span>Outages in your area</span><span class="ok">None</span></li>
+        <li class="flex justify-between"><span>Reconnects</span><span class="warn">14 · mostly 7–10pm</span></li>
+      </ul>
+    </div>
+    <div class="bubble-bot">
+      An evening-only pattern with no outage usually means Wi-Fi congestion, not a line problem. Moving your network to a less crowded channel often fixes it. Want me to try that?
+    </div>
+    <div class="flex flex-wrap gap-1.5">
+      <span class="chip chip-primary">Optimize my Wi-Fi</span>
+      <span class="chip">Restart gateway</span>
+      <span class="chip">Talk to an agent</span>
+    </div>
+  </PhoneFrame>
+
+  <!-- 2. Handoff with context -->
+  <PhoneFrame label="02 · Handoff with context" title="Virtual Assistant" subtitle="Connecting you…">
+    <div class="bubble-user">I was charged twice for my plan this month.</div>
+    <div class="bubble-bot">
+      I can see two charges of $64.99 on Oct 3. Billing disputes need a specialist, so I'm connecting you to one now.
+    </div>
+    <div class="tool-card">
+      <p class="label-mono text-[0.6rem] mb-2">Shared with the agent</p>
+      <p class="mb-2">Customer reports a duplicate monthly charge. Two identical charges on Oct 3 confirmed. Identity already verified. No earlier contact about this.</p>
+      <div class="flex flex-wrap gap-1">
+        <span class="mini-tag">Billing</span>
+        <span class="mini-tag">Verified</span>
+        <span class="mini-tag">Sentiment: frustrated</span>
+      </div>
+    </div>
+    <div class="system-line">Alex from Billing joined the chat</div>
+    <div class="bubble-agent">
+      <p class="text-[0.65rem] font-medium mb-0.5 opacity-70">Alex · Billing</p>
+      Hi! I've got the details, so no need to repeat anything. I'm reversing the duplicate charge now.
+    </div>
+  </PhoneFrame>
+
+  <!-- 3. Field-tech assistant -->
+  <PhoneFrame label="03 · Field-tech assistant" title="Tech Assist" subtitle="Work order #48213">
+    <div class="bubble-user">Downstream SNR is 29 dB at the tap. Customer still has intermittent drops. What next?</div>
+    <div class="bubble-bot">
+      29 dB is below the 33 dB minimum, so the problem is likely between the tap and the home. Check in this order:
+    </div>
+    <div class="tool-card">
+      <ol class="space-y-1.5 list-decimal list-inside">
+        <li>Inspect the drop connectors for corrosion</li>
+        <li>Replace any splitters with more than 2 ways</li>
+        <li>Re-test SNR at the ground block</li>
+      </ol>
+      <p class="mt-2 text-[0.65rem] text-[var(--color-text-muted)]">Source: Install & Repair Guide §4.2</p>
+    </div>
+    <div class="bubble-user">Replaced a 4-way splitter. SNR is 36 dB now.</div>
+    <div class="bubble-bot">That's within spec. I've added the fix to the work order notes.</div>
+    <div class="flex flex-wrap gap-1.5">
+      <span class="chip chip-primary">Close work order</span>
+      <span class="chip">Run speed test</span>
+    </div>
+  </PhoneFrame>
+</div>
+
+<style>
+  .bubble-user,
+  .bubble-bot,
+  .bubble-agent {
+    max-width: 85%;
+    padding: 0.5rem 0.75rem;
+    border-radius: 1rem;
+  }
+  .bubble-user {
+    margin-left: auto;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border-bottom-right-radius: 0.25rem;
+  }
+  .bubble-bot {
+    background: color-mix(in oklab, var(--color-surface) 70%, var(--color-text-muted));
+    border-bottom-left-radius: 0.25rem;
+  }
+  .bubble-agent {
+    background: color-mix(in oklab, var(--color-surface) 75%, var(--color-accent-warm));
+    border-bottom-left-radius: 0.25rem;
+  }
+  .tool-card {
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
+    border-radius: 0.6rem;
+    padding: 0.6rem 0.75rem;
+    background: var(--color-bg);
+    font-size: 0.75rem;
+  }
+  .ok { color: var(--color-accent); font-weight: 500; }
+  .warn { color: var(--color-accent-warm); font-weight: 500; }
+  .chip {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+  }
+  .chip-primary {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+  .mini-tag {
+    font-size: 0.6rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 0.3rem;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+  }
+  .system-line {
+    text-align: center;
+    font-size: 0.65rem;
+    color: var(--color-text-muted);
+  }
+</style>

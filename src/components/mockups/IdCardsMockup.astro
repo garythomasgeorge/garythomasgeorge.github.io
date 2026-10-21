@@ -1,0 +1,166 @@
+---
+// Illustrative recreation of Fedena ID Cards: a template editor fed by SIS
+// fields, a live card preview, and a small-batch print queue. Sample data only.
+
+const fields = [
+  { name: "Photo", on: true },
+  { name: "Full name", on: true },
+  { name: "Admission no.", on: true },
+  { name: "Class & section", on: true },
+  { name: "Blood group", on: true },
+  { name: "Guardian phone", on: false },
+  { name: "QR code (student ID)", on: true },
+];
+
+const queue = [
+  { what: "Replacement ID cards", detail: "3 students · Grade 5", status: "Printing" },
+  { what: "New staff ID cards", detail: "2 employees", status: "Ready" },
+  { what: "Sports Day certificates", detail: "12 students · print + PDF", status: "Queued" },
+];
+---
+
+<div class="grid gap-3 lg:grid-cols-[0.9fr_1fr_1fr] text-[0.8rem] items-start">
+  <!-- Template fields -->
+  <div class="idc-panel">
+    <p class="font-medium mb-1">Student ID template</p>
+    <p class="text-[0.7rem] text-[var(--color-text-muted)] mb-3">Fields pulled directly from Fedena records</p>
+    <ul class="space-y-1.5">
+      {fields.map((f) => (
+        <li class="flex items-center justify-between">
+          <span>{f.name}</span>
+          <span class:list={["toggle", { "toggle-on": f.on }]}><i></i></span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <!-- Card preview -->
+  <div class="flex flex-col items-center gap-2">
+    <div class="idcard">
+      <div class="idcard-head">
+        <span class="idcard-logo">GP</span>
+        <div>
+          <p class="font-semibold text-[0.75rem] leading-tight">Greenfield Public School</p>
+          <p class="text-[0.6rem] opacity-80">Student Identity Card · 2020–21</p>
+        </div>
+      </div>
+      <div class="flex gap-3 p-3">
+        <div class="idcard-photo"></div>
+        <div class="space-y-1 text-[0.68rem] min-w-0">
+          <p class="font-semibold text-[0.8rem]">Ananya Rao</p>
+          <p><span class="idcard-k">Adm. no</span> GPS-2041</p>
+          <p><span class="idcard-k">Class</span> 5 · B</p>
+          <p><span class="idcard-k">Blood</span> O+</p>
+        </div>
+      </div>
+      <div class="flex items-center justify-between px-3 pb-3">
+        <div class="idcard-qr"></div>
+        <p class="text-[0.55rem] text-right opacity-70">Valid till<br />31 Mar 2021</p>
+      </div>
+    </div>
+    <p class="label-mono text-[0.6rem]">Live preview · front</p>
+  </div>
+
+  <!-- Print queue -->
+  <div class="idc-panel">
+    <p class="font-medium mb-3">Print queue</p>
+    <ul class="space-y-2.5">
+      {queue.map((q) => (
+        <li class="flex items-start justify-between gap-2">
+          <div>
+            <p>{q.what}</p>
+            <p class="text-[0.7rem] text-[var(--color-text-muted)]">{q.detail}</p>
+          </div>
+          <span class="idc-status">{q.status}</span>
+        </li>
+      ))}
+    </ul>
+    <p class="mt-3 text-[0.7rem] text-[var(--color-text-muted)]">Print in-house in any quantity, from one card up</p>
+  </div>
+</div>
+
+<style>
+  .idc-panel {
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    padding: 0.85rem;
+    background: var(--color-surface);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.08);
+  }
+  .toggle {
+    width: 1.6rem;
+    height: 0.9rem;
+    border-radius: 999px;
+    background: var(--color-border);
+    position: relative;
+  }
+  .toggle i {
+    position: absolute;
+    top: 0.1rem;
+    left: 0.1rem;
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 999px;
+    background: var(--color-surface);
+  }
+  .toggle-on { background: var(--color-accent); }
+  .toggle-on i { left: auto; right: 0.1rem; }
+
+  .idcard {
+    width: 240px;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: #ffffff;
+    color: #1b1b24;
+    border: 1px solid var(--color-border);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.15);
+  }
+  .idcard-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.75rem;
+    background: #1f4e79;
+    color: #ffffff;
+  }
+  .idcard-logo {
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    font-size: 0.6rem;
+    font-weight: 700;
+    background: #ffffff;
+    color: #1f4e79;
+  }
+  .idcard-photo {
+    width: 3.6rem;
+    height: 4.4rem;
+    border-radius: 0.4rem;
+    flex-shrink: 0;
+    background:
+      radial-gradient(circle at 50% 38%, #b9c3d0 0 26%, transparent 27%),
+      radial-gradient(ellipse at 50% 100%, #b9c3d0 0 45%, transparent 46%),
+      #e6ebf1;
+  }
+  .idcard-k { color: #6b7280; display: inline-block; width: 3.4rem; }
+  .idcard-qr {
+    width: 2.4rem;
+    height: 2.4rem;
+    background:
+      repeating-linear-gradient(90deg, #1b1b24 0 3px, transparent 3px 6px),
+      repeating-linear-gradient(0deg, #1b1b24 0 3px, transparent 3px 7px);
+    background-blend-mode: multiply;
+    opacity: 0.85;
+    border: 2px solid #1b1b24;
+  }
+  .idc-status {
+    font-size: 0.62rem;
+    padding: 0.1rem 0.45rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-accent);
+    color: var(--color-accent);
+    white-space: nowrap;
+  }
+</style>

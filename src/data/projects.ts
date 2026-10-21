@@ -1,16 +1,14 @@
-// TODO: replace #TODO-* placeholders with real URLs before launch.
-//   - #TODO-adk-hitl-medium  : Medium post for ADK HITL middleware
-//   - #TODO-adk-hitl-github  : GitHub repo for ADK HITL middleware
-//   - #TODO-cx-agent-medium  : Medium post for CX Agent Studio review
-//   - #TODO-wordle-github    : GitHub repo for Customizable Wordle
-//   - #TODO-fitbit-github    : GitHub repo for Fitbit Watchface
-//   - #TODO-univault-app     : App Store URL for UniVault
 
 export type ProjectType = "Enterprise" | "Personal" | "Open Source";
 
 export interface ExternalLink {
   label: string;
   href: string;
+}
+
+export interface Metric {
+  value: string;
+  label: string;
 }
 
 export interface Project {
@@ -21,20 +19,40 @@ export interface Project {
   tags: string[];
   hasCaseStudy: boolean;
   featured?: boolean;
+  metrics?: Metric[];
   links: ExternalLink[];
 }
 
 export const projects: Project[] = [
   {
-    slug: "xfinity-assistant",
-    name: "Xfinity Assistant — Comcast",
+    slug: "enterprise-virtual-assistant",
+    name: "Enterprise Virtual Assistant",
     type: "Enterprise",
     blurb:
-      "Migrating Comcast's omnichannel virtual assistant to Google ADK and shipping generative AI features at scale.",
+      "Product manager on a high-volume omnichannel chatbot: moving it to Google ADK and shipping its first generative AI features.",
     tags: ["Google ADK", "CX Agent Studio", "Vertex AI", "Dialogflow", "Cloud Run"],
     hasCaseStudy: true,
     featured: true,
-    links: [{ label: "Case Study", href: "/portfolio/xfinity-assistant" }],
+    metrics: [
+      { value: "300K+", label: "chatbot sessions / day" },
+      { value: "78%", label: "containment" },
+    ],
+    links: [{ label: "Case Study", href: "/portfolio/enterprise-virtual-assistant" }],
+  },
+  {
+    slug: "transcript-analysis",
+    name: "Chat Transcript Analysis Tool",
+    type: "Enterprise",
+    blurb:
+      "An internal Gemini tool that scores chatbot conversations for sentiment, writes summaries and generates agent metrics. I built it hands-on with Claude and other AI coding tools.",
+    tags: ["Gemini", "LLM Evaluation", "Conversation Analytics", "Vertex AI", "Claude", "Antigravity"],
+    hasCaseStudy: true,
+    featured: true,
+    metrics: [
+      { value: "1,000+", label: "internal users" },
+      { value: "~100", label: "daily active users" },
+    ],
+    links: [{ label: "Case Study", href: "/portfolio/transcript-analysis" }],
   },
   {
     slug: "adk-hitl",
@@ -58,7 +76,6 @@ export const projects: Project[] = [
       "Independent product breakdown of Google CX Agent Studio — connecting enterprise patterns to ADK HITL concepts.",
     tags: ["CX Agent Studio", "Product Analysis", "Conversational AI"],
     hasCaseStudy: true,
-    featured: true,
     links: [{ label: "Read on Medium", href: "https://medium.com/@garythomasgeorge/cx-agent-studio-the-evolution-of-googles-conversational-ai-stack-a-first-look-09d87a95a093" }],
   },
   {
@@ -66,10 +83,13 @@ export const projects: Project[] = [
     name: "Fedena Mobile App",
     type: "Enterprise",
     blurb:
-      "0→1 launch of the Fedena Connect mobile app (Android + iOS) for school admins, parents, students, and teachers — drove a 30% adoption increase.",
+      "0→1 launch of the Fedena Mobile App (Android + iOS) for school admins, parents, students, and teachers — drove a 30% adoption increase.",
     tags: ["Mobile", "Flutter", "Education SaaS", "0→1"],
     hasCaseStudy: true,
-    links: [{ label: "Case Study", href: "/portfolio/fedena-mobile" }],
+    links: [
+      { label: "Case Study", href: "/portfolio/fedena-mobile" },
+      { label: "App Store", href: "https://apps.apple.com/us/app/fedena-mobile-app/id1474936818" },
+    ],
   },
   {
     slug: "gradebook",
@@ -82,6 +102,16 @@ export const projects: Project[] = [
     links: [{ label: "Case Study", href: "/portfolio/gradebook" }],
   },
   {
+    slug: "fedena-id-cards",
+    name: "Fedena ID Cards",
+    type: "Enterprise",
+    blurb:
+      "Let schools design and print their own student and staff ID cards and certificates from Fedena records, instead of relying on outside print vendors.",
+    tags: ["Education SaaS", "Web App", "Printing", "User Research"],
+    hasCaseStudy: true,
+    links: [{ label: "Case Study", href: "/portfolio/fedena-id-cards" }],
+  },
+  {
     slug: "univault",
     name: "UniVault Link Manager",
     type: "Personal",
@@ -89,7 +119,10 @@ export const projects: Project[] = [
       "iOS link manager app — save, organize, and revisit URLs with smart tagging.",
     tags: ["iOS", "Swift", "Personal Project"],
     hasCaseStudy: true,
-    links: [{ label: "App Store", href: "https://apps.apple.com/us/app/univault-link-manager/id6758565593" }],
+    links: [
+      { label: "Case Study", href: "/portfolio/univault" },
+      { label: "App Store", href: "https://apps.apple.com/us/app/univault-link-manager/id6758565593" },
+    ],
   },
   {
     slug: "wordle",

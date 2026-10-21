@@ -1,14 +1,25 @@
 ---
 import type { Project } from "../data/projects.ts";
 import SkillBadge from "./SkillBadge.astro";
+import ProjectPreview from "./ProjectPreview.astro";
 
 interface Props {
   project: Project;
 }
 const { project } = Astro.props;
+const caseStudy = project.links.find((l) => l.href.startsWith("/"));
 ---
 
-<article class="card p-6 flex flex-col gap-4 h-full">
+<article class="card overflow-hidden flex flex-col h-full">
+  {caseStudy ? (
+    <a href={caseStudy.href} tabindex="-1" class="block">
+      <ProjectPreview slug={project.slug} />
+    </a>
+  ) : (
+    <ProjectPreview slug={project.slug} />
+  )}
+
+  <div class="p-5 flex flex-col gap-4 flex-1">
   <div class="flex items-start justify-between gap-3">
     <h3 class="font-serif text-xl leading-tight">{project.name}</h3>
     <span class="label-mono shrink-0 mt-1">{project.type}</span>
@@ -17,6 +28,18 @@ const { project } = Astro.props;
   <p class="text-sm text-[var(--color-text-muted)] leading-relaxed flex-1">
     {project.blurb}
   </p>
+
+  {project.metrics && project.metrics.length > 0 && (
+    <dl class="grid grid-cols-2 gap-3">
+      {project.metrics.map((m) => (
+        <div>
+          <dt class="sr-only">{m.label}</dt>
+          <dd class="font-serif text-2xl leading-none text-[var(--color-accent)]">{m.value}</dd>
+          <dd class="mt-1 text-xs text-[var(--color-text-muted)]">{m.label}</dd>
+        </div>
+      ))}
+    </dl>
+  )}
 
   <div class="flex flex-wrap gap-1.5">
     {project.tags.slice(0, 4).map((t) => <SkillBadge label={t} />)}
@@ -37,5 +60,6 @@ const { project } = Astro.props;
         </svg>
       </a>
     ))}
+  </div>
   </div>
 </article>

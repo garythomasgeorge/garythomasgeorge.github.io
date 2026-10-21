@@ -1,12 +1,13 @@
 ---
 import SkillBadge from "./SkillBadge.astro";
-import type { ExternalLink, ProjectType } from "../data/projects.ts";
+import type { ExternalLink, Metric, ProjectType } from "../data/projects.ts";
 
 interface Props {
   name: string;
   type: ProjectType;
   tags: string[];
   links: ExternalLink[];
+  metrics?: Metric[];
   overview?: string;
   problem?: string;
   role?: string;
@@ -19,6 +20,7 @@ const {
   type,
   tags,
   links,
+  metrics = [],
   overview,
   problem,
   role,
@@ -32,7 +34,7 @@ const visibleLinks = links.filter(
 );
 ---
 
-<article class="container-page py-16 md:py-20 max-w-3xl">
+<article class="container-page py-10 md:py-12">
   <a href="/portfolio" class="label-mono inline-flex items-center gap-1.5 text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors">
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
       <line x1="19" y1="12" x2="5" y2="12"/>
@@ -41,84 +43,117 @@ const visibleLinks = links.filter(
     All work
   </a>
 
-  <header class="mt-6">
-    <span class="label-mono">{type}</span>
-    <h1 class="font-serif text-4xl md:text-5xl mt-3 leading-[1.1]">{name}</h1>
+  <!-- Title and links on the left, headline numbers on the right -->
+  <div class:list={["mt-4 grid gap-6", { "lg:grid-cols-[1fr_1fr] lg:items-end": metrics.length > 0 }]}>
+    <header>
+      <span class="label-mono">{type}</span>
+      <h1 class="font-serif text-3xl md:text-4xl mt-2 leading-[1.1]">{name}</h1>
 
-    <div class="mt-5 flex flex-wrap gap-1.5">
-      {tags.map((t) => <SkillBadge label={t} />)}
-    </div>
+      <div class="mt-4 flex flex-wrap gap-1.5">
+        {tags.map((t) => <SkillBadge label={t} />)}
+      </div>
 
-    <div class="mt-6 flex flex-wrap gap-3">
-      {visibleLinks.map((link) => (
-        <a
-          href={link.href}
-          target={link.href.startsWith("http") ? "_blank" : undefined}
-          rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-          class="btn-ghost text-sm"
-        >
-          {link.label}
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-            <line x1="5" y1="12" x2="19" y2="12"/>
-            <polyline points="12 5 19 12 12 19"/>
-          </svg>
-        </a>
-      ))}
-    </div>
-  </header>
+      {visibleLinks.length > 0 && (
+        <div class="mt-5 flex flex-wrap gap-3">
+          {visibleLinks.map((link) => (
+            <a
+              href={link.href}
+              target={link.href.startsWith("http") ? "_blank" : undefined}
+              rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+              class="btn-ghost text-sm"
+            >
+              {link.label}
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </a>
+          ))}
+        </div>
+      )}
+    </header>
 
-  <hr class="hr-fade my-10" />
+    {metrics.length > 0 && (
+      <dl class="grid grid-cols-2 gap-3">
+        {metrics.map((m) => (
+          <div class="card p-4">
+            <dt class="sr-only">{m.label}</dt>
+            <dd class="font-serif text-3xl leading-none text-[var(--color-accent)]">{m.value}</dd>
+            <dd class="mt-2 text-xs text-[var(--color-text-muted)] leading-snug">{m.label}</dd>
+          </div>
+        ))}
+      </dl>
+    )}
+  </div>
+
+  <hr class="hr-fade my-8" />
 
   {overview && (
-    <section class="mb-10">
+    <section class="mb-8">
       <h2 class="label-mono mb-3">Overview</h2>
-      <p class="text-lg text-[var(--color-text-primary)] leading-relaxed">{overview}</p>
+      <p class="text-base md:text-lg text-[var(--color-text-primary)] leading-relaxed max-w-5xl">{overview}</p>
     </section>
   )}
 
-  {problem && (
-    <section class="mb-10">
-      <h2 class="label-mono mb-3">Problem</h2>
-      <p class="text-base text-[var(--color-text-primary)] leading-relaxed">{problem}</p>
+  {(problem || role) && (
+    <div class="grid gap-8 md:grid-cols-2 mb-8">
+      {problem && (
+        <section>
+          <h2 class="label-mono mb-3">Problem</h2>
+          <p class="text-base text-[var(--color-text-primary)] leading-relaxed">{problem}</p>
+        </section>
+      )}
+      {role && (
+        <section>
+          <h2 class="label-mono mb-3">My Role</h2>
+          <p class="text-base text-[var(--color-text-primary)] leading-relaxed">{role}</p>
+        </section>
+      )}
+    </div>
+  )}
+
+  {Astro.slots.has("showcase") && (
+    <section class="my-10">
+      <h2 class="label-mono mb-4">What it looks like</h2>
+      <div class="space-y-8">
+        <slot name="showcase" />
+      </div>
     </section>
   )}
 
-  {role && (
-    <section class="mb-10">
-      <h2 class="label-mono mb-3">My Role</h2>
-      <p class="text-base text-[var(--color-text-primary)] leading-relaxed">{role}</p>
-    </section>
+  {(approach.length > 0 || outcomes.length > 0) && (
+    <div class:list={["grid gap-8", { "lg:grid-cols-[1.5fr_1fr]": approach.length > 0 && outcomes.length > 0 }]}>
+      {approach.length > 0 && (
+        <section>
+          <h2 class="label-mono mb-3">Approach &amp; Key Decisions</h2>
+          <ul class="space-y-3">
+            {approach.map((a) => (
+              <li class="flex gap-3 text-base leading-relaxed">
+                <span class="text-[var(--color-accent)] mt-1.5 shrink-0">▹</span>
+                <span>{a}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {outcomes.length > 0 && (
+        <section class="card p-5 self-start">
+          <h2 class="label-mono mb-3">Outcomes</h2>
+          <ul class="space-y-3">
+            {outcomes.map((o) => (
+              <li class="flex gap-3 text-base leading-relaxed">
+                <span class="text-[var(--color-accent-warm)] mt-1.5 shrink-0">★</span>
+                <span>{o}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </div>
   )}
 
-  {approach.length > 0 && (
-    <section class="mb-10">
-      <h2 class="label-mono mb-3">Approach &amp; Key Decisions</h2>
-      <ul class="space-y-3">
-        {approach.map((a) => (
-          <li class="flex gap-3 text-base leading-relaxed">
-            <span class="text-[var(--color-accent)] mt-1.5 shrink-0">▹</span>
-            <span>{a}</span>
-          </li>
-        ))}
-      </ul>
-    </section>
-  )}
-
-  {outcomes.length > 0 && (
-    <section class="mb-10">
-      <h2 class="label-mono mb-3">Outcomes</h2>
-      <ul class="space-y-3">
-        {outcomes.map((o) => (
-          <li class="flex gap-3 text-base leading-relaxed">
-            <span class="text-[var(--color-accent-warm)] mt-1.5 shrink-0">★</span>
-            <span>{o}</span>
-          </li>
-        ))}
-      </ul>
-    </section>
-  )}
-
-  <hr class="hr-fade my-10" />
+  <hr class="hr-fade my-8" />
 
   <a href="/portfolio" class="link-accent inline-flex items-center gap-1.5">
     More work

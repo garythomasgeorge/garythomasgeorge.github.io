@@ -13,18 +13,18 @@ export interface Experience {
 export const experience: Experience[] = [
   {
     company: "Capgemini",
-    role: "Consultant / Product Owner",
-    client: "Comcast — Xfinity Assistant",
+    role: "Product Manager",
+    client: "Fortune 50 Telecom — Omnichannel Virtual Assistant",
     location: "Philadelphia",
     start: "Jun 2024",
     end: "Present",
     bullets: [
-      "Contributing to roadmap and delivery of Xfinity Assistant — a large-scale omnichannel virtual assistant.",
-      "Supporting migration of IVR and chatbot modules to the Google ADK / Conversational Agents ecosystem.",
-      "Launched field tech chatbot in 4 months; used by 100+ techs, 10,000+ chats/day.",
-      "Built a Conversational Agents Playbook prototype → shipped to production → contributing to millions in savings by reducing human agent escalations.",
-      "Owned the Sales and Internet Essentials modules within the broader omnichannel IVR migration.",
-      "Vibe-coded AXIS — an internal chat transcript analyzer built end-to-end with Gemini LLMs, surfacing sentiment, summary, and agent metrics.",
+      "Product manager for an omnichannel customer-service chatbot that handles 300K+ sessions a day across app, web and messaging, with 78% containment.",
+      "Helping move IVR and chatbot modules from a legacy stack to Google ADK / Conversational Agents, coordinating 5 teams across 3 orgs.",
+      "Took a field-tech assistant from 0 to launch in 4 months. It now serves 100+ technicians and handles 10,000+ chats a day.",
+      "Prototyped a generative Conversational Agents Playbook and shipped it to production. It cut escalations to human agents and saves millions a year.",
+      "Owned the Sales and affordable-plan enrollment modules in the omnichannel IVR migration.",
+      "Built a Gemini-powered chat transcript analysis tool hands-on with Claude, Antigravity and other AI coding tools. I co-built the first version with the product director and an engineer, and it now has 1,000+ internal users with ~100 active each day.",
     ],
     stack: [
       "Google ADK",
@@ -45,7 +45,7 @@ export const experience: Experience[] = [
     bullets: [
       "Consolidated messaging into integrated Email + WhatsApp platform → 40% productivity increase.",
       "Designed and launched Gradebook module across 10+ countries → 20% retention increase, 15% sales growth.",
-      "Launched Fedena Connect mobile app (Android + iOS) → 30% adoption increase.",
+      "Launched the Fedena Mobile App (Android + iOS) → 30% adoption increase.",
       "Drove gate management (QR/Barcode) and post-MVP owner dashboard → 30% productivity increase.",
     ],
   },
@@ -114,6 +114,14 @@ export const certifications: Certification[] = [
   {
     name: "Certified Scrum Product Owner (CSPO)",
     issuer: "Scrum Alliance",
+  },
+  {
+    name: "Product Analytics Certified",
+    issuer: "Pendo × Mind the Product",
+  },
+  {
+    name: "AI for Product Management (course completed)",
+    issuer: "Pendo × Mind the Product · Google Cloud",
   },
 ];
 

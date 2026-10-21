@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CaseStudy from "../../components/CaseStudy.astro";
+import { projects } from "../../data/projects.ts";
+import MockupFigure from "../../components/mockups/MockupFigure.astro";
+import AssistantMockups from "../../components/mockups/AssistantMockups.astro";
+
+const project = projects.find((p) => p.slug === "enterprise-virtual-assistant")!;
+---
+
+<BaseLayout
+  title={project.name}
+  description="Product manager on an omnichannel chatbot with 300K+ sessions a day and 78% containment, moving it to Google ADK and shipping its first generative AI features."
+>
+  <CaseStudy
+    name={project.name}
+    type={project.type}
+    tags={project.tags}
+    links={project.links}
+    metrics={[
+      { value: "300K+", label: "chatbot sessions a day" },
+      { value: "78%", label: "containment" },
+      { value: "10K+", label: "field-tech chats a day" },
+      { value: "4 mo", label: "field-tech assistant, 0 → launch" },
+    ]}
+    overview="A Fortune 50 telecom company's omnichannel virtual assistant, used by customers in its app, on its website and over messaging, and by its field technicians. It handles more than 300,000 sessions a day. The team is moving it from a legacy chatbot stack to Google's ADK / Conversational Agents platform and adding generative AI for the first time. Client details are confidential."
+    problem="The legacy chatbot couldn't support generative experiences. The customer and field-tech assistants were built separately, with no shared playbook layer. Five teams across three orgs had to migrate together without disrupting a channel that handles hundreds of thousands of conversations a day."
+    role="Product Manager. I own roadmap items and feature scoping and coordinate across 5 teams in 3 orgs. I turn leadership's priorities into product increments we can ship and work through trade-offs with engineering, design and operations."
+    approach={[
+      "Scoped and led a 4-month program to take the field-tech chatbot from nothing to launch. It now serves 100+ technicians and handles 10,000+ chats a day.",
+      "Prototyped the generative Conversational Agents Playbook layer and pushed for it to go to production, where it reduced escalations to human agents.",
+      "Led the Sales and affordable-plan enrollment modules of the omnichannel IVR migration to Dialogflow / ADK.",
+      "Built a Gemini-powered chat transcript analysis tool so the team can see how the assistant performs in production conversations (see the separate case study).",
+      "Kept one migration backlog across all teams so cutovers stayed in order and risks stayed visible.",
+    ]}
+    outcomes={[
+      "300K+ chatbot sessions a day at 78% containment, sustained during the migration.",
+      "Field-tech assistant launched in 4 months: 100+ technicians, 10,000+ chats a day.",
+      "Playbook prototype taken to production, with lower escalation to human agents.",
+      "Omnichannel IVR migration in progress, with the first generative AI features live in production.",
+    ]}
+  >
+    <Fragment slot="showcase">
+      <MockupFigure
+        title="One assistant, three jobs"
+        caption="A generative answer based on live account checks, a handoff to a person that carries a summary so customers don't repeat themselves, and a field-tech assistant that answers from repair guides."
+      >
+        <AssistantMockups />
+      </MockupFigure>
+    </Fragment>
+  </CaseStudy>
+</BaseLayout>

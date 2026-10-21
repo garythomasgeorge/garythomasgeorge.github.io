@@ -1,0 +1,78 @@
+---
+// Small visual window for a project card. Hand-built mockups are rendered at
+// a reduced scale; app projects show cropped App Store screenshots. Renders
+// nothing for projects without a visual.
+import AssistantMockups from "./mockups/AssistantMockups.astro";
+import InsightsDashboardMockup from "./mockups/InsightsDashboardMockup.astro";
+import HitlMockup from "./mockups/HitlMockup.astro";
+import GradebookMockup from "./mockups/GradebookMockup.astro";
+import IdCardsMockup from "./mockups/IdCardsMockup.astro";
+
+interface Props {
+  slug: string;
+  size?: "card" | "thumb";
+}
+const { slug, size = "card" } = Astro.props;
+
+const mockups: Record<string, any> = {
+  "enterprise-virtual-assistant": AssistantMockups,
+  "transcript-analysis": InsightsDashboardMockup,
+  "adk-hitl": HitlMockup,
+  gradebook: GradebookMockup,
+  "fedena-id-cards": IdCardsMockup,
+};
+const screenshots: Record<string, string[]> = {
+  "fedena-mobile": ["/screens/fedena/4.jpg", "/screens/fedena/5.jpg", "/screens/fedena/1.jpg"],
+  univault: ["/screens/univault/1.jpg", "/screens/univault/3.jpg", "/screens/univault/4.jpg"],
+};
+
+const Mockup = mockups[slug];
+const shots = screenshots[slug];
+const scale = size === "card" ? 0.5 : 0.2;
+const shotCount = size === "card" ? 3 : 1;
+---
+
+{(Mockup || shots) && (
+  <div
+    class:list={["preview", size === "card" ? "h-40 border-b border-[var(--color-border)]" : "h-full"]}
+    aria-hidden="true"
+  >
+    {Mockup && (
+      <div class="preview-scaled" style={`--s:${scale}`}>
+        <Mockup />
+      </div>
+    )}
+    {shots && (
+      <div class="flex gap-2 h-full p-2 pb-0 justify-center">
+        {shots.slice(0, shotCount).map((src) => (
+          <img src={src} alt="" loading="lazy" decoding="async" class="h-[180%] w-auto rounded-md border border-[var(--color-border)] object-cover object-top" />
+        ))}
+      </div>
+    )}
+  </div>
+)}
+
+<style>
+  .preview {
+    position: relative;
+    overflow: hidden;
+    pointer-events: none;
+    background-color: color-mix(in oklab, var(--color-bg) 92%, var(--color-accent));
+    background-image: radial-gradient(color-mix(in oklab, var(--color-text-muted) 28%, transparent) 1px, transparent 1px);
+    background-size: 14px 14px;
+  }
+  /* Render the mockup at full size, then shrink it to fit the window */
+  .preview-scaled {
+    width: calc(100% / var(--s));
+    padding: 1.25rem;
+    transform: scale(var(--s));
+    transform-origin: top left;
+  }
+  .preview::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 30%;
+    background: linear-gradient(to bottom, transparent, color-mix(in oklab, var(--color-surface) 85%, transparent));
+  }
+</style>

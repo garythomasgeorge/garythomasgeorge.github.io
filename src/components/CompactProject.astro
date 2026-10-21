@@ -1,0 +1,39 @@
+---
+// One-row project summary for the home page "More work" list.
+import type { Project } from "../data/projects.ts";
+import ProjectPreview from "./ProjectPreview.astro";
+
+interface Props {
+  project: Project;
+}
+const { project } = Astro.props;
+const primary = project.links.find((l) => l.href.startsWith("/")) ?? project.links[0];
+const href = primary?.href ?? `/portfolio/${project.slug}`;
+const external = href.startsWith("http");
+---
+
+<a
+  href={href}
+  target={external ? "_blank" : undefined}
+  rel={external ? "noopener noreferrer" : undefined}
+  class="card flex gap-3 p-2.5 group"
+>
+  <div class="w-24 h-20 shrink-0 rounded-md overflow-hidden border border-[var(--color-border)] thumb-fallback">
+    <ProjectPreview slug={project.slug} size="thumb" />
+  </div>
+  <div class="min-w-0 flex flex-col py-0.5">
+    <div class="flex items-baseline gap-2">
+      <h3 class="font-serif text-base leading-tight truncate group-hover:text-[var(--color-accent)] transition-colors">{project.name}</h3>
+    </div>
+    <p class="label-mono text-[0.6rem] mt-0.5">{project.type}</p>
+    <p class="text-xs text-[var(--color-text-muted)] leading-snug mt-1 line-clamp-2">{project.blurb}</p>
+  </div>
+</a>
+
+<style>
+  .thumb-fallback {
+    background-color: color-mix(in oklab, var(--color-bg) 90%, var(--color-accent));
+    background-image: radial-gradient(color-mix(in oklab, var(--color-text-muted) 28%, transparent) 1px, transparent 1px);
+    background-size: 10px 10px;
+  }
+</style>

@@ -1,0 +1,90 @@
+---
+// Illustrative view of the ADK human-in-the-loop middleware: an agent run
+// paused on a flagged tool call, and the approval request a reviewer sees.
+
+const steps = [
+  { label: "lookup_order", detail: "order A-1182 · delivered Oct 9", state: "done" },
+  { label: "check_refund_policy", detail: "eligible · within 30 days", state: "done" },
+  { label: "issue_refund", detail: "amount: $120.00 → card ending 4417", state: "paused" },
+  { label: "send_confirmation", detail: "waiting on previous step", state: "queued" },
+];
+---
+
+<div class="grid gap-3 lg:grid-cols-[1.2fr_1fr] text-[0.8rem]">
+  <!-- Agent run timeline -->
+  <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl overflow-hidden">
+    <div class="flex items-center gap-2 px-4 py-3 border-b border-[var(--color-border)]">
+      <span class="font-mono text-[0.7rem] text-[var(--color-text-muted)]">run_7f3a</span>
+      <span class="font-medium mr-auto">refund_agent</span>
+      <span class="state state-paused">Paused for approval</span>
+    </div>
+    <ol class="p-4 space-y-3">
+      {steps.map((s, i) => (
+        <li class="flex gap-3">
+          <span class:list={["dot", `dot-${s.state}`]}>{s.state === "done" ? "✓" : i + 1}</span>
+          <div class="min-w-0">
+            <p class="font-mono text-[0.75rem]">{s.label}()</p>
+            <p class="text-[0.7rem] text-[var(--color-text-muted)]">{s.detail}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <div class="px-4 py-2.5 border-t border-[var(--color-border)] text-[0.7rem] text-[var(--color-text-muted)] font-mono">
+      state saved · agent worker released · resumes on decision
+    </div>
+  </div>
+
+  <!-- Approval request -->
+  <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xl p-4 flex flex-col gap-3">
+    <div>
+      <p class="label-mono text-[0.6rem]">Approval request</p>
+      <p class="font-medium mt-1">Refund $120.00 to customer?</p>
+    </div>
+    <div class="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] p-3 space-y-1.5">
+      <div class="flex justify-between"><span class="text-[var(--color-text-muted)]">Tool</span><span class="font-mono text-[0.72rem]">issue_refund</span></div>
+      <div class="flex justify-between"><span class="text-[var(--color-text-muted)]">Why paused</span><span>Refunds over $50 need review</span></div>
+      <div class="flex justify-between"><span class="text-[var(--color-text-muted)]">Agent reason</span><span>Item arrived damaged</span></div>
+    </div>
+    <div class="flex gap-2">
+      <span class="btn-mock btn-mock-primary">Approve</span>
+      <span class="btn-mock">Edit amount</span>
+      <span class="btn-mock">Reject</span>
+    </div>
+    <p class="text-[0.68rem] text-[var(--color-text-muted)]">Sent to #support-approvals · expires in 4h</p>
+  </div>
+</div>
+
+<style>
+  .state {
+    font-size: 0.65rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+  }
+  .state-paused { color: var(--color-accent-warm); }
+  .dot {
+    flex-shrink: 0;
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    font-size: 0.65rem;
+    font-weight: 600;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+  }
+  .dot-done { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-bg); }
+  .dot-paused { border-color: var(--color-accent-warm); color: var(--color-accent-warm); box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-accent-warm) 20%, transparent); }
+  .btn-mock {
+    font-size: 0.72rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 0.4rem;
+    border: 1px solid var(--color-border);
+  }
+  .btn-mock-primary {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-bg);
+  }
+</style>

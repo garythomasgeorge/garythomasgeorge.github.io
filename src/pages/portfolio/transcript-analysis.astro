@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CaseStudy from "../../components/CaseStudy.astro";
+import { projects } from "../../data/projects.ts";
+import MockupFigure from "../../components/mockups/MockupFigure.astro";
+import InsightsDashboardMockup from "../../components/mockups/InsightsDashboardMockup.astro";
+
+const project = projects.find((p) => p.slug === "transcript-analysis")!;
+---
+
+<BaseLayout
+  title={project.name}
+  description="An internal Gemini tool I built hands-on with AI coding tools that analyzes chatbot transcripts for sentiment, summaries and agent metrics. It has 1,000+ internal users."
+>
+  <CaseStudy
+    name={project.name}
+    type={project.type}
+    tags={project.tags}
+    links={project.links}
+    metrics={[
+      { value: "1,000+", label: "internal users" },
+      { value: "~100", label: "daily active users" },
+      { value: "200K+", label: "conversations analyzed a day" },
+      { value: "15+", label: "LLM-generated metrics" },
+    ]}
+    overview="An internal tool that uses Gemini to analyze transcripts from an enterprise chatbot with 300K+ sessions a day. It scores each conversation for sentiment, writes a summary and reports agent performance metrics. Product, design, operations and analytics teams use it to see how the assistant behaves in real conversations, not just in dashboards. As a PM, I built much of it myself with AI coding tools and took it from first prototype to a tool with 1,000+ users."
+    problem="At hundreds of thousands of sessions a day, nobody can read enough transcripts to know why a conversation succeeded, failed or escalated. Session counts and containment rates show what happened but not why. Teams needed a way to see sentiment, summaries and recurring failure patterns across all conversations, not a hand-picked sample."
+    role="Product manager and hands-on builder. I co-built the first version with our product director and an engineer. I defined the problem, designed the prompts and metrics, and wrote much of the tool myself with Claude, Antigravity and other AI coding tools. The engineer later made the production analysis pipeline and relay code more robust. I led adoption across internal teams."
+    approach={[
+      "Used Gemini to turn raw chat transcripts into structured output: a sentiment score, a short summary and a set of agent performance metrics for each conversation.",
+      "Designed the metrics with the people who use them, so each one answers a question a product or operations team actually asks.",
+      "Started with a working prototype instead of a spec. I built it with Claude, Antigravity and other AI coding tools so ideas went from question to working feature in days, not sprints.",
+      "Co-built the first version with the product director and an engineer. Once usage grew, the engineer made the production analysis pipeline and relay code more robust, so the prototype could become a tool teams depend on.",
+      "Treated LLM output as something to check: compared the generated scores and summaries against human-reviewed transcripts before teams relied on them.",
+      "Grew it from a small prototype to 1,000+ internal users, with one engineer on production hardening and no dedicated engineering team for the rest.",
+    ]}
+    outcomes={[
+      "1,000+ internal users, with about 100 using it each day.",
+      "Used across product, design and operations to find what drives sentiment and escalation in the chatbot.",
+      "Shows that a PM working with AI coding tools can find a gap, build the fix and get it adopted at enterprise scale.",
+    ]}
+  >
+    <Fragment slot="showcase">
+      <MockupFigure
+        title="From transcripts to answers"
+        caption="Team-level trends at the top. Below, any conversation with its LLM summary, scores and the exact turn where it went wrong, so a sentiment drop leads straight to a fix."
+      >
+        <InsightsDashboardMockup />
+      </MockupFigure>
+    </Fragment>
+  </CaseStudy>
+</BaseLayout>

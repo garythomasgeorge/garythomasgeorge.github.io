@@ -2,6 +2,8 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CaseStudy from "../../components/CaseStudy.astro";
 import { projects } from "../../data/projects.ts";
+import MockupFigure from "../../components/mockups/MockupFigure.astro";
+import HitlMockup from "../../components/mockups/HitlMockup.astro";
 
 const project = projects.find((p) => p.slug === "adk-hitl")!;
 ---
@@ -28,5 +30,14 @@ const project = projects.find((p) => p.slug === "adk-hitl")!;
       "Foundation for the CX Agent Studio enterprise abstraction discussed in Part 2 of the blog series.",
       "Cited and referenced in Part 1 of the two-part Medium series on agentic systems.",
     ]}
-  />
+  >
+    <Fragment slot="showcase">
+      <MockupFigure
+        title="Pause, ask, resume"
+        caption="The agent stops at a flagged tool call, saves its state and frees the worker. A reviewer gets the request with the agent's reasoning and can approve, edit or reject it. The run then resumes from where it paused."
+      >
+        <HitlMockup />
+      </MockupFigure>
+    </Fragment>
+  </CaseStudy>
 </BaseLayout>

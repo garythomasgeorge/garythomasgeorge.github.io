@@ -1,0 +1,228 @@
+---
+// Representative dashboard for the chat transcript analysis tool. Every number
+// and transcript here is invented sample data, not client data.
+
+const kpis = [
+  { label: "Conversations analyzed", value: "1.42M", delta: "last 7 days", tone: "muted" },
+  { label: "Containment", value: "78%", delta: "▲ 0.6 pts", tone: "good" },
+  { label: "Negative sentiment", value: "14%", delta: "▼ 1.2 pts", tone: "good" },
+  { label: "Repeat contact · 48h", value: "9.3%", delta: "▲ 0.4 pts", tone: "bad" },
+];
+
+// Share of conversations by sentiment, per day (positive / neutral / negative)
+const days = [
+  { d: "Mon", pos: 52, neu: 32, neg: 16 },
+  { d: "Tue", pos: 54, neu: 31, neg: 15 },
+  { d: "Wed", pos: 49, neu: 33, neg: 18 },
+  { d: "Thu", pos: 55, neu: 32, neg: 13 },
+  { d: "Fri", pos: 57, neu: 30, neg: 13 },
+  { d: "Sat", pos: 60, neu: 29, neg: 11 },
+  { d: "Sun", pos: 58, neu: 30, neg: 12 },
+];
+const chartH = 120;
+const barW = 34;
+const gap = 40;
+
+const drivers = [
+  { label: "Asked for a person on the first turn", pct: 29 },
+  { label: "Billing dispute (needs a person)", pct: 21 },
+  { label: "Same intent missed 2+ times", pct: 17 },
+  { label: "Identity check failed", pct: 12 },
+  { label: "Outage status unclear", pct: 8 },
+];
+
+const transcripts = [
+  { id: "C-20931", intent: "Wi-Fi drops", channel: "App", sentiment: "neg", outcome: "Escalated", selected: true },
+  { id: "C-20928", intent: "Bill explanation", channel: "Web", sentiment: "neu", outcome: "Contained" },
+  { id: "C-20925", intent: "Plan upgrade", channel: "SMS", sentiment: "pos", outcome: "Contained" },
+  { id: "C-20919", intent: "Equipment return", channel: "Web", sentiment: "neu", outcome: "Contained" },
+  { id: "C-20914", intent: "Appointment", channel: "App", sentiment: "pos", outcome: "Contained" },
+];
+const sentimentLabel = { pos: "Positive", neu: "Neutral", neg: "Negative" } as const;
+---
+
+<div class="dash rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-[0.8rem] overflow-hidden shadow-xl">
+  <!-- Top bar -->
+  <div class="flex flex-wrap items-center gap-3 px-4 py-3 border-b border-[var(--color-border)]">
+    <div class="flex items-center gap-2 mr-auto">
+      <span class="w-6 h-6 rounded-md grid place-items-center bg-[var(--color-accent)] text-[var(--color-bg)] text-[0.65rem] font-bold">CI</span>
+      <span class="font-medium">Conversation Insights</span>
+    </div>
+    <span class="filter">Last 7 days ▾</span>
+    <span class="filter">All channels ▾</span>
+    <span class="filter hidden sm:inline-block">Intent: any ▾</span>
+  </div>
+
+  <div class="p-4 space-y-4">
+    <!-- KPIs -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      {kpis.map((k) => (
+        <div class="panel">
+          <p class="text-[0.7rem] text-[var(--color-text-muted)]">{k.label}</p>
+          <p class="font-serif text-2xl mt-1 leading-none">{k.value}</p>
+          <p class:list={["text-[0.68rem] mt-1.5", `tone-${k.tone}`]}>{k.delta}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Charts -->
+    <div class="grid gap-3 lg:grid-cols-[1.1fr_1fr]">
+      <div class="panel">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <p class="font-medium">Sentiment mix by day</p>
+          <div class="flex gap-3 text-[0.65rem] text-[var(--color-text-muted)]">
+            <span class="flex items-center gap-1"><i class="sw sw-pos"></i>Positive</span>
+            <span class="flex items-center gap-1"><i class="sw sw-neu"></i>Neutral</span>
+            <span class="flex items-center gap-1"><i class="sw sw-neg"></i>Negative</span>
+          </div>
+        </div>
+        <svg viewBox={`0 0 ${days.length * (barW + gap)} ${chartH + 18}`} class="w-full h-auto" role="img" aria-label="Stacked bars showing positive, neutral and negative sentiment share per day">
+          {days.map((day, i) => {
+            const x = i * (barW + gap) + gap / 2;
+            const hNeg = (day.neg / 100) * chartH;
+            const hNeu = (day.neu / 100) * chartH;
+            const hPos = (day.pos / 100) * chartH;
+            return (
+              <g>
+                <rect x={x} y={0} width={barW} height={hNeg} rx="3" class="fill-neg" />
+                <rect x={x} y={hNeg + 1.5} width={barW} height={hNeu - 1.5} class="fill-neu" />
+                <rect x={x} y={hNeg + hNeu + 1.5} width={barW} height={hPos - 1.5} rx="3" class="fill-pos" />
+                <text x={x + barW / 2} y={chartH + 14} text-anchor="middle" class="axis">{day.d}</text>
+              </g>
+            );
+          })}
+        </svg>
+      </div>
+
+      <div class="panel">
+        <p class="font-medium mb-3">Top escalation drivers</p>
+        <ul class="space-y-2.5">
+          {drivers.map((d) => (
+            <li>
+              <div class="flex justify-between gap-2 text-[0.72rem] mb-1">
+                <span>{d.label}</span>
+                <span class="text-[var(--color-text-muted)] tabular-nums">{d.pct}%</span>
+              </div>
+              <div class="h-1.5 rounded-full bg-[var(--color-border)]">
+                <div class="h-1.5 rounded-full bg-[var(--color-accent-warm)]" style={`width:${(d.pct / 30) * 100}%`}></div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Transcripts + detail -->
+    <div class="grid gap-3 lg:grid-cols-[1fr_1.15fr]">
+      <div class="panel !p-0 overflow-hidden">
+        <p class="font-medium px-3 pt-3 pb-2">Transcripts <span class="text-[var(--color-text-muted)] font-normal">· 5 of 2,906 flagged</span></p>
+        <ul>
+          {transcripts.map((t) => (
+            <li class:list={["row", { "row-selected": t.selected }]}>
+              <span class="font-mono text-[0.68rem] text-[var(--color-text-muted)] w-16 shrink-0">{t.id}</span>
+              <span class="flex-1 truncate">{t.intent}</span>
+              <span class="text-[0.68rem] text-[var(--color-text-muted)] w-10 hidden sm:inline">{t.channel}</span>
+              <span class:list={["pill", `pill-${t.sentiment}`]}>{sentimentLabel[t.sentiment as keyof typeof sentimentLabel]}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="panel">
+        <div class="flex items-center justify-between mb-2">
+          <p class="font-medium">C-20931 · Wi-Fi drops</p>
+          <span class="text-[0.68rem] text-[var(--color-text-muted)]">App · 9 turns · 6m 12s</span>
+        </div>
+        <p class="label-mono text-[0.6rem] mb-1">LLM summary</p>
+        <p class="leading-relaxed mb-3">
+          Customer reported evening Wi-Fi drops for three nights. The assistant ran a connection check and suggested a channel change. The customer had already tried that and asked for a technician. The assistant offered the same fix again before escalating.
+        </p>
+        <div class="grid grid-cols-4 gap-2 mb-3">
+          <div class="score"><span>Sentiment</span><b class="tone-bad">−0.42</b></div>
+          <div class="score"><span>Resolved</span><b class="tone-bad">No</b></div>
+          <div class="score"><span>Effort</span><b>4 / 5</b></div>
+          <div class="score"><span>Loops</span><b class="tone-bad">1</b></div>
+        </div>
+        <p class="label-mono text-[0.6rem] mb-1.5">Flagged moment · turn 6</p>
+        <blockquote class="quote">“I already did that yesterday. Can someone just come look at it?”</blockquote>
+        <div class="flex flex-wrap gap-1.5 mt-3">
+          <span class="mini-tag">repeated-suggestion</span>
+          <span class="mini-tag">tech-visit-intent</span>
+          <span class="mini-tag">add to review queue</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .panel {
+    border: 1px solid var(--color-border);
+    border-radius: 0.6rem;
+    padding: 0.75rem;
+    background: var(--color-bg);
+  }
+  .filter {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.6rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.4rem;
+    color: var(--color-text-muted);
+  }
+  .tone-good { color: var(--color-accent); }
+  .tone-bad { color: var(--color-accent-warm); }
+  .tone-muted { color: var(--color-text-muted); }
+
+  .sw { display: inline-block; width: 0.55rem; height: 0.55rem; border-radius: 2px; }
+  .sw-pos, .fill-pos { background: var(--color-accent); fill: var(--color-accent); }
+  .sw-neu, .fill-neu { background: color-mix(in oklab, var(--color-text-muted) 45%, transparent); fill: color-mix(in oklab, var(--color-text-muted) 45%, transparent); }
+  .sw-neg, .fill-neg { background: var(--color-accent-warm); fill: var(--color-accent-warm); }
+  .axis { font-size: 9px; fill: var(--color-text-muted); font-family: var(--font-mono); }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.75rem;
+    border-top: 1px solid var(--color-border);
+  }
+  .row-selected {
+    background: color-mix(in oklab, var(--color-accent) 10%, transparent);
+    box-shadow: inset 3px 0 0 var(--color-accent);
+  }
+  .pill {
+    font-size: 0.62rem;
+    padding: 0.1rem 0.45rem;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+  }
+  .pill-pos { color: var(--color-accent); }
+  .pill-neu { color: var(--color-text-muted); }
+  .pill-neg { color: var(--color-accent-warm); }
+
+  .score {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.4rem 0.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.45rem;
+  }
+  .score span { font-size: 0.6rem; color: var(--color-text-muted); }
+  .score b { font-size: 0.85rem; font-weight: 600; }
+
+  .quote {
+    border-left: 2px solid var(--color-accent-warm);
+    padding-left: 0.6rem;
+    font-style: italic;
+    color: var(--color-text-muted);
+  }
+  .mini-tag {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 0.3rem;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+  }
+</style>
