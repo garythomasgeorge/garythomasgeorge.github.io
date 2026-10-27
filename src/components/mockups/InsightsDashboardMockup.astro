@@ -87,7 +87,7 @@ const sentimentLabel = { pos: "Positive", neu: "Neutral", neg: "Negative" } as c
                 <rect x={x} y={0} width={barW} height={hNeg} rx="3" class="fill-neg" />
                 <rect x={x} y={hNeg + 1.5} width={barW} height={hNeu - 1.5} class="fill-neu" />
                 <rect x={x} y={hNeg + hNeu + 1.5} width={barW} height={hPos - 1.5} rx="3" class="fill-pos" />
-                <text x={x + barW / 2} y={chartH + 14} text-anchor="middle" class="axis">{day.d}</text>
+                <text x={x + barW / 2} y={chartH + 14} text-anchor="middle" class="chart-axis">{day.d}</text>
               </g>
             );
           })}
@@ -177,7 +177,7 @@ const sentimentLabel = { pos: "Positive", neu: "Neutral", neg: "Negative" } as c
   .sw-pos, .fill-pos { background: var(--color-accent); fill: var(--color-accent); }
   .sw-neu, .fill-neu { background: color-mix(in oklab, var(--color-text-muted) 45%, transparent); fill: color-mix(in oklab, var(--color-text-muted) 45%, transparent); }
   .sw-neg, .fill-neg { background: var(--color-accent-warm); fill: var(--color-accent-warm); }
-  .axis { font-size: 9px; fill: var(--color-text-muted); font-family: var(--font-mono); }
+  .chart-axis { font-size: 9px; fill: var(--color-text-muted); font-family: var(--font-mono); }
 
   .row {
     display: flex;

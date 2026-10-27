@@ -1,14 +1,17 @@
 ---
 import SkillBadge from "./SkillBadge.astro";
+import type { ExperienceGroup } from "../data/experience.ts";
 
 interface Props {
   company: string;
   role: string;
   client?: string;
+  officialTitle?: string;
   product?: string;
   location: string;
   dateRange: string;
   bullets?: string[];
+  groups?: ExperienceGroup[];
   stack?: string[];
   compact?: boolean;
 }
@@ -17,10 +20,12 @@ const {
   company,
   role,
   client,
+  officialTitle,
   product,
   location,
   dateRange,
   bullets = [],
+  groups = [],
   stack = [],
   compact = false,
 } = Astro.props;
@@ -41,6 +46,7 @@ const {
   {(client || product) && (
     <p class="mt-2 text-sm text-[var(--color-text-muted)]">
       {client && <><span class="text-[var(--color-text-primary)]">Client:</span> {client}</>}
+      {!compact && officialTitle && <> · <span class="text-[var(--color-text-primary)]">{company} title:</span> {officialTitle}</>}
       {product && <><span class="text-[var(--color-text-primary)]">Product:</span> {product}</>}
     </p>
   )}
@@ -55,6 +61,23 @@ const {
       ))}
     </ul>
   )}
+
+  {!compact && groups.map((g) => (
+    <section class="mt-4">
+      <h4 class="text-sm">
+        <span class="font-semibold text-[var(--color-text-primary)]">{g.title}</span>
+        <span class="text-[var(--color-text-muted)]"> ({g.detail})</span>
+      </h4>
+      <ul class="mt-2 space-y-2 text-sm text-[var(--color-text-primary)] leading-relaxed">
+        {g.bullets.map((b) => (
+          <li class="flex gap-3">
+            <span class="text-[var(--color-accent)] mt-1.5 shrink-0">▹</span>
+            <span><strong class="font-semibold">{b.label}:</strong> {b.text}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
 
   {!compact && stack.length > 0 && (
     <div class="mt-4 flex flex-wrap gap-1.5">
