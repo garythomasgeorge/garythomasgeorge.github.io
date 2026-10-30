@@ -1,0 +1,316 @@
+---
+// Gradebook design process, rebuilt from scratch: a component model, three
+// wireframe directions and two finished layouts. Every school, student and
+// mark here is invented; no customer material is used.
+import MockupFigure from "./MockupFigure.astro";
+
+const components = [
+  { name: "Header", varies: "Logos, school details, board registration" },
+  { name: "Student details", varies: "Which fields, how many, photo or none" },
+  { name: "Scholastic results", varies: "Terms, assessments, weightages, formulas" },
+  { name: "Co-scholastic grades", varies: "Activities, conduct, each with its own scale" },
+  { name: "Attendance", varies: "Automatic or manual, by term or by year" },
+  { name: "Grading scales", varies: "Letters, points, ranges, one or several" },
+  { name: "Remarks", varies: "Per term or per year, labels set by the school" },
+  { name: "Sign-off", varies: "Who signs, seal, promotion note" },
+];
+
+// Single-page layout: grouped subjects with two terms and an average
+const groups = [
+  { name: "English", subjects: [["Language", 41, 44], ["Literature", 38, 42]] },
+  { name: "Mathematics", subjects: [["Mathematics", 45, 47]] },
+  { name: "Science", subjects: [["Physics", 39, 41], ["Chemistry", 42, 40], ["Biology", 44, 46]] },
+  { name: "Social Studies", subjects: [["History", 37, 40], ["Geography", 40, 43]] },
+] as const;
+const allMarks = groups.flatMap((g) => g.subjects.map((s) => [s[1], s[2]] as const));
+const termTotal = (i: 0 | 1) => allMarks.reduce((sum, m) => sum + m[i], 0);
+const maxTotal = allMarks.length * 50;
+const pct = (n: number) => Math.round((n / maxTotal) * 100);
+
+const conduct = [["Application", "A"], ["Conduct", "A"], ["Punctuality", "B"], ["Teamwork", "A"]];
+const graded = [["Art", "A"], ["Music", "B"], ["Physical Education", "A"]];
+
+// Color layout: two terms, each with test, project and exam
+const scholastic = [
+  ["English", 18, 9, 62, 17, 8, 65],
+  ["Mathematics", 19, 10, 66, 20, 9, 68],
+  ["Science", 16, 8, 58, 18, 9, 61],
+  ["Social Studies", 17, 9, 60, 17, 9, 63],
+  ["Second Language", 15, 8, 55, 16, 8, 59],
+] as const;
+const gradeFor = (total: number) => (total >= 91 ? "A1" : total >= 81 ? "A2" : total >= 71 ? "B1" : total >= 61 ? "B2" : "C1");
+const activities = [["Art Education", "A", "A"], ["Health & Fitness", "B", "A"], ["Work Education", "A", "B"]];
+const scale = [["91+", "A1"], ["81+", "A2"], ["71+", "B1"], ["61+", "B2"], ["51+", "C1"]];
+---
+
+<MockupFigure
+  title="The same blocks, different rules"
+  caption="Studying report cards and grading rules across countries showed that schools share the same building blocks and disagree about nearly everything inside them. So the product became a set of configurable components, not a fixed template."
+  note="Sample model"
+>
+  <div class="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+    {components.map((c) => (
+      <div class="block-card">
+        <p class="font-medium text-sm">{c.name}</p>
+        <p class="mt-1 text-xs text-[var(--color-text-muted)] leading-snug">{c.varies}</p>
+      </div>
+    ))}
+  </div>
+</MockupFigure>
+
+<MockupFigure
+  title="Three directions on paper"
+  caption="I sketched on paper first, then built versions in Adobe XD. These redrawn wireframes show the three directions: a dense card for skills and marks, a short single page, and a two-page version with room for skills. Angle brackets mark what each school can change."
+  note="Redrawn wireframes"
+>
+  <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
+    <!-- A: skills and marks -->
+    <div>
+      <p class="label-mono text-[0.65rem] mb-2">A · Skills + marks</p>
+      <div class="wire">
+        <div class="wf-row"><span class="wf-box w-10 h-10">Logo</span><span class="wf-center">&lt;School name&gt;<br />&lt;Report card name&gt;</span><span class="wf-box w-10 h-10">Board?</span></div>
+        <div class="wf-lines">Student profile<i></i><i></i><i></i></div>
+        <div class="wf-lines">&lt;Student records&gt; optional<i></i><i></i></div>
+        <div class="wf-table h-8">Attendance · T1 · T2</div>
+        <div class="wf-table flex-1">&lt;Label&gt; Subject · E1 E2 E3 Total × 2 terms</div>
+        <p class="wf-note">Does attendance need its own label?</p>
+      </div>
+    </div>
+    <!-- B: short single page -->
+    <div>
+      <p class="label-mono text-[0.65rem] mb-2">B · Short single page</p>
+      <div class="wire">
+        <div class="wf-row"><span class="wf-box w-10 h-10">Logo</span><span class="wf-center">&lt;School name&gt;<br />&lt;Session&gt;</span><span class="wf-box w-10 h-10">Photo</span></div>
+        <div class="wf-lines">Name · Roll · Class<i></i></div>
+        <div class="wf-table flex-1">Subjects 1–7 · Term 1 · Term 2</div>
+        <div class="grid grid-cols-2 gap-1.5">
+          <div class="wf-table h-14">Remarks</div>
+          <div class="wf-table h-14">Co-scholastic</div>
+        </div>
+        <div class="grid grid-cols-2 gap-1.5">
+          <div class="wf-table h-10">Grade · Range</div>
+          <div class="wf-table h-10">Signature · Seal</div>
+        </div>
+        <p class="wf-note">Fit remarks to the height of the table beside it</p>
+      </div>
+    </div>
+    <!-- C: two pages -->
+    <div>
+      <p class="label-mono text-[0.65rem] mb-2">C · Two pages, color</p>
+      <div class="wire">
+        <div class="grid grid-cols-2 gap-1.5 flex-1">
+          <div class="flex flex-col gap-1.5">
+            <span class="wf-box h-12">&lt;School photo&gt;</span>
+            <span class="wf-center">&lt;Report title&gt;</span>
+            <div class="wf-lines flex-1">Profile<i></i><i></i><i></i></div>
+            <div class="wf-lines">&lt;Health&gt;<i></i><i></i></div>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <div class="wf-table flex-1">&lt;Label&gt; English: Skill 1, 2, 3 · Maths: Skill 1, 2 · T1 · T2</div>
+            <div class="wf-table h-10">Remarks</div>
+            <div class="wf-table h-9">Scale 1 · Scale 2</div>
+          </div>
+        </div>
+        <p class="wf-note">Two grade scales: side by side, or one?</p>
+      </div>
+    </div>
+  </div>
+</MockupFigure>
+
+<MockupFigure
+  title="Two finished layouts"
+  caption="The same components in two very different formats: a black-and-white single page that groups related subjects and prints cheaply, and a color layout with a one-accent table system that keeps a lot of data readable."
+  note="Recreated · sample data"
+>
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 items-start">
+    <!-- Single-page, black and white -->
+    <div class="paper paper-bw">
+      <header class="text-center">
+        <p class="p-title">Sample Public School</p>
+        <p class="p-sub">123 Example Road, Sample City</p>
+        <p class="p-band">Annual Report Card</p>
+      </header>
+      <div class="p-fields">
+        <div><span>Name of the student</span><b>Student Name</b></div>
+        <div><span>Admission no</span><b>0001</b></div>
+        <div><span>Class</span><b>7 A</b></div>
+      </div>
+      <div class="p-cols">
+        <div>
+          <table>
+            <thead><tr><th class="l">Subjects</th><th>Term 1</th><th>Term 2</th><th>Avg</th></tr></thead>
+            <tbody>
+              {groups.map((g) => (
+                <Fragment>
+                  {g.subjects.length > 1 && <tr class="grp"><td class="l" colspan="4">{g.name}</td></tr>}
+                  {g.subjects.map((s) => (
+                    <tr>
+                      <td class:list={["l", { "pl-3": g.subjects.length > 1, "font-semibold": g.subjects.length === 1 }]}>{s[0]}</td>
+                      <td>{s[1]}</td>
+                      <td class="shade">{s[2]}</td>
+                      <td>{(s[1] + s[2]) / 2}</td>
+                    </tr>
+                  ))}
+                </Fragment>
+              ))}
+              <tr class="tot"><td class="l">Total</td><td>{termTotal(0)}</td><td class="shade">{termTotal(1)}</td><td>{(termTotal(0) + termTotal(1)) / 2}</td></tr>
+              <tr class="tot"><td class="l">Percentage</td><td>{pct(termTotal(0))}</td><td class="shade">{pct(termTotal(1))}</td><td>{Math.round((pct(termTotal(0)) + pct(termTotal(1))) / 2)}</td></tr>
+            </tbody>
+          </table>
+          <p class="p-foot">Each subject out of 50.</p>
+        </div>
+        <div class="space-y-2">
+          <table>
+            <thead><tr><th class="l">Personal profile</th><th>T1</th><th>T2</th></tr></thead>
+            <tbody>{conduct.map((c) => <tr><td class="l">{c[0]}</td><td>{c[1]}</td><td class="shade">{c[1]}</td></tr>)}</tbody>
+          </table>
+          <table>
+            <thead><tr><th class="l">Graded subjects</th><th>T1</th><th>T2</th></tr></thead>
+            <tbody>{graded.map((c) => <tr><td class="l">{c[0]}</td><td>{c[1]}</td><td class="shade">{c[1]}</td></tr>)}</tbody>
+          </table>
+          <table><tbody><tr class="tot"><td class="l">Attendance</td><td>92</td><td>88</td></tr></tbody></table>
+          <div class="p-box"><b>Remarks</b><p>A steady year with good progress in science. Keep reading widely.</p></div>
+        </div>
+      </div>
+      <div class="p-sign"><span>Class Teacher</span><span>Principal</span><span>Parent</span></div>
+    </div>
+
+    <!-- Color layout -->
+    <div class="paper paper-color">
+      <header class="text-center">
+        <p class="p-title">Sample Public School</p>
+        <p class="p-sub">123 Example Road, Sample City</p>
+        <p class="p-band">Annual Report Card</p>
+      </header>
+      <div class="p-fields">
+        <div><span>Name of the student</span><b>Student Name</b></div>
+        <div><span>Roll no</span><b>12</b></div>
+        <div><span>Class</span><b>7 A</b></div>
+      </div>
+      <div class="overflow-x-auto">
+        <table>
+          <thead>
+            <tr class="head"><th class="l">Scholastic</th><th colspan="4">Term 1</th><th colspan="4">Term 2</th></tr>
+            <tr class="sub"><th class="l">Subject</th><th>Test</th><th>Proj</th><th>Exam</th><th>Total</th><th>Test</th><th>Proj</th><th>Exam</th><th>Total</th></tr>
+          </thead>
+          <tbody>
+            {scholastic.map((r) => (
+              <tr>
+                <td class="l">{r[0]}</td>
+                <td>{r[1]}</td><td>{r[2]}</td><td>{r[3]}</td><td class="font-semibold">{r[1] + r[2] + r[3]} {gradeFor(r[1] + r[2] + r[3])}</td>
+                <td>{r[4]}</td><td>{r[5]}</td><td>{r[6]}</td><td class="font-semibold">{r[4] + r[5] + r[6]} {gradeFor(r[4] + r[5] + r[6])}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div class="p-cols p-even mt-2">
+        <table>
+          <thead><tr class="head"><th class="l">Co-scholastic</th><th>T1</th><th>T2</th></tr></thead>
+          <tbody>{activities.map((a) => <tr><td class="l">{a[0]}</td><td>{a[1]}</td><td>{a[2]}</td></tr>)}</tbody>
+        </table>
+        <div class="space-y-2">
+          <table>
+            <thead><tr class="head"><th class="l">Attendance</th><th>T1</th><th>T2</th></tr></thead>
+            <tbody><tr><td class="l">Days present</td><td>92</td><td>88</td></tr></tbody>
+          </table>
+          <table>
+            <tbody>
+              <tr class="sub"><td class="l">Marks</td>{scale.map((s) => <td>{s[0]}</td>)}</tr>
+              <tr><td class="l">Grade</td>{scale.map((s) => <td>{s[1]}</td>)}</tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="p-box mt-2"><b>Term 1 remarks</b><p>A confident start, with strong project work in science.</p></div>
+      <div class="p-sign"><span>Class Teacher</span><span>Principal</span><span>Parent</span></div>
+    </div>
+  </div>
+</MockupFigure>
+
+<style>
+  .block-card {
+    border: 1px solid var(--color-border);
+    border-radius: 0.6rem;
+    padding: 0.75rem;
+    background: var(--color-surface);
+  }
+
+  /* Wireframes: ink-on-paper in both themes */
+  .wire {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    height: 22rem;
+    padding: 0.7rem;
+    background: #ffffff;
+    color: #27408b;
+    border: 1.5px solid #27408b;
+    border-radius: 3px;
+    font-size: 0.62rem;
+    line-height: 1.25;
+    box-shadow: 0 10px 20px -8px rgb(0 0 0 / 0.2);
+  }
+  .wf-row { display: flex; align-items: center; justify-content: space-between; gap: 0.4rem; }
+  .wf-center { flex: 1; text-align: center; }
+  .wf-box {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    text-align: center;
+    border: 1.2px solid currentColor;
+  }
+  .wf-lines { display: flex; flex-direction: column; gap: 0.3rem; }
+  .wf-lines i { display: block; height: 1px; background: currentColor; opacity: 0.55; }
+  .wf-table { border: 1.2px solid currentColor; padding: 0.25rem 0.35rem; }
+  .wf-note { color: #b42318; font-style: italic; }
+
+  /* Sample report cards: paper stays light in dark mode */
+  .paper {
+    min-width: 0;
+    background: #ffffff;
+    color: #1b1b24;
+    padding: 1.1rem;
+    border-radius: 3px;
+    font-size: 0.66rem;
+    line-height: 1.3;
+    box-shadow: 0 16px 28px -12px rgb(0 0 0 / 0.3);
+    --ink: #1b1b24;
+    --tint: #eeeeee;
+    --rule: #cfcfcf;
+  }
+  .paper-color { --ink: #0f5e73; --tint: #e3f1f5; --rule: #bfd9e1; }
+  .p-title { font-family: var(--font-serif); font-size: 1.15rem; color: var(--ink); }
+  .p-sub { color: #6b7280; font-size: 0.6rem; }
+  .p-band {
+    margin-top: 0.4rem;
+    padding: 0.2rem;
+    background: var(--tint);
+    color: var(--ink);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .p-fields { display: flex; justify-content: space-between; gap: 0.6rem; margin: 0.6rem 0; }
+  .p-fields span { display: block; color: #6b7280; font-size: 0.58rem; }
+  .p-fields b { color: var(--ink); }
+  .p-cols { display: grid; grid-template-columns: 1.3fr 1fr; gap: 0.5rem; align-items: start; }
+  .p-even { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 480px) {
+    .p-cols, .p-even { grid-template-columns: minmax(0, 1fr); }
+  }
+  .paper table { width: 100%; border-collapse: collapse; }
+  .paper th, .paper td { border: 1px solid var(--rule); padding: 0.16rem 0.25rem; text-align: center; }
+  .paper .l { text-align: left; }
+  .paper-bw th { background: #ffffff; font-weight: 700; }
+  .shade { background: var(--tint); }
+  .grp td { font-weight: 600; }
+  .tot td { font-weight: 700; }
+  .paper-color .head th { background: var(--ink); color: #ffffff; font-weight: 600; }
+  .paper-color .sub th, .paper-color .sub td { background: var(--tint); color: var(--ink); font-weight: 600; }
+  .paper-color tbody tr:nth-child(even):not(.sub) td { background: #f5fafb; }
+  .p-foot { margin-top: 0.2rem; color: #6b7280; font-size: 0.58rem; }
+  .p-box { border: 1px solid var(--rule); padding: 0.3rem 0.4rem; }
+  .p-box b { color: var(--ink); }
+  .p-sign { display: flex; justify-content: space-between; margin-top: 1.1rem; color: #4b5563; }
+</style>
