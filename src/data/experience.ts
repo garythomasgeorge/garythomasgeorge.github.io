@@ -52,7 +52,7 @@ export const experience: Experience[] = [
         title: "Chat Transcript Analysis Tool",
         detail: "internal conversation insights platform built with Gemini",
         bullets: [
-          { label: "Scale", text: "analyzes 200K+ conversations a day, producing 15+ LLM-generated metrics per conversation, including sentiment, summary, resolution, escalation reason, repeat contact, customer effort and human-agent performance." },
+          { label: "Scale", text: "analyzes 200K+ conversations a day, producing 10+ LLM-generated metrics per conversation, including sentiment, summary, resolution, escalation reason, repeat contact, customer effort and human-agent performance." },
           { label: "Adoption", text: "grew from a prototype to 1,000+ internal users (about 100 daily) across product, design, operations and analytics, used to find what drives negative sentiment and escalations." },
           { label: "AI-first ADLC", text: "built hands-on as a PM with Claude, Google Antigravity and other AI coding tools across requirements, prompt design, code and testing, shipping features in days instead of sprints." },
           { label: "Quality and team", text: "validated LLM scores against human-reviewed transcripts. Co-built v1 with the product director and an engineer, who later hardened the production pipeline and relay code." },

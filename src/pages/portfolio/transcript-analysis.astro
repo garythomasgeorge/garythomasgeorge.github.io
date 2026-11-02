@@ -21,7 +21,7 @@ const project = projects.find((p) => p.slug === "transcript-analysis")!;
       { value: "1,000+", label: "internal users" },
       { value: "~100", label: "daily active users" },
       { value: "200K+", label: "conversations analyzed a day" },
-      { value: "15+", label: "LLM-generated metrics" },
+      { value: "10+", label: "LLM-generated metrics" },
     ]}
     overview="An internal tool that uses Gemini to analyze transcripts from an enterprise chatbot with 300K+ sessions a day. It scores each conversation for sentiment, writes a summary and reports agent performance metrics. Product, design, operations and analytics teams use it to see how the assistant behaves in real conversations, not just in dashboards. As a PM, I built much of it myself with AI coding tools and took it from first prototype to a tool with 1,000+ users."
     problem="At hundreds of thousands of sessions a day, nobody can read enough transcripts to know why a conversation succeeded, failed or escalated. Session counts and containment rates show what happened but not why. Teams needed a way to see sentiment, summaries and recurring failure patterns across all conversations, not a hand-picked sample."
